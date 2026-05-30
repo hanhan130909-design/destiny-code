@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "document": "BaZi Chart Rules & Terminology Map",
+    "version": "1.0.0",
+    "sprint": 1,
+    "project": "Destiny Code",
+    "lastUpdated": "2026-05-30",
+    "description": "Structured rules for BaZi chart calculation, Ten Gods determination, Five Elements relationships, New Age terminology mapping, and common pattern templates."
+  },
+
+  "heavenlyStems": {
+    "description": "The 10 Heavenly Stems (天干 / Tian Gan) — the explicit energies visible on the surface of a BaZi chart.",
+    "stems": {
+      "甲": {"pinyin": "Jia", "element": "Wood", "polarity": "Yang", "englishAlias": "Yang Wood — the towering tree, pioneer spirit"},
+      "乙": {"pinyin": "Yi", "element": "Wood", "polarity": "Yin", "englishAlias": "Yin Wood — the vine, graceful persistence"},
+      "丙": {"pinyin": "Bing", "element": "Fire", "polarity": "Yang", "englishAlias": "Yang Fire — the sun, radiant leader"},
+      "丁": {"pinyin": "Ding", "element": "Fire", "polarity": "Yin", "englishAlias": "Yin Fire — the candle flame, inner warmth"},
+      "戊": {"pinyin": "Wu", "element": "Earth", "polarity": "Yang", "englishAlias": "Yang Earth — the mountain, steadfast protector"},
+      "己": {"pinyin": "Ji", "element": "Earth", "polarity": "Yin", "englishAlias": "Yin Earth — the fertile soil, nurturing sustainer"},
+      "庚": {"pinyin": "Geng", "element": "Metal", "polarity": "Yang", "englishAlias": "Yang Metal — the sword, decisive and principled"},
+      "辛": {"pinyin": "Xin", "element": "Metal", "polarity": "Yin", "englishAlias": "Yin Metal — the jewel, refined and discerning"},
+      "壬": {"pinyin": "Ren", "element": "Water", "polarity": "Yang", "englishAlias": "Yang Water — the ocean, visionary and expansive"},
+      "癸": {"pinyin": "Gui", "element": "Water", "polarity": "Yin", "englishAlias": "Yin Water — the mist, deep intuition"}
+    }
+  },
+
+  "earthlyBranches": {
+    "description": "The 12 Earthly Branches (地支 / Di Zhi) — representing time periods, hidden stems, and relationship dynamics.",
+    "branches": {
+      "子": {"pinyin": "Zi", "zodiac": "Rat", "season": "Mid-Winter", "element": "Water", "hiddenStems": ["癸"]},
+      "丑": {"pinyin": "Chou", "zodiac": "Ox", "season": "Late Winter", "element": "Earth", "hiddenStems": ["己","癸","辛"]},
+      "寅": {"pinyin": "Yin", "zodiac": "Tiger", "season": "Early Spring", "element": "Wood", "hiddenStems": ["甲","丙","戊"]},
+      "卯": {"pinyin": "Mao", "zodiac": "Rabbit", "season": "Mid-Spring", "element": "Wood", "hiddenStems": ["乙"]},
+      "辰": {"pinyin": "Chen", "zodiac": "Dragon", "season": "Late Spring", "element": "Earth", "hiddenStems": ["戊","乙","癸"]},
+      "巳": {"pinyin": "Si", "zodiac": "Snake", "season": "Early Summer", "element": "Fire", "hiddenStems": ["丙","庚","戊"]},
+      "午": {"pinyin": "Wu", "zodiac": "Horse", "season": "Mid-Summer", "element": "Fire", "hiddenStems": ["丁","己"]},
+      "未": {"pinyin": "Wei", "zodiac": "Goat", "season": "Late Summer", "element": "Earth", "hiddenStems": ["己","丁","乙"]},
+      "申": {"pinyin": "Shen", "zodiac": "Monkey", "season": "Early Autumn", "element": "Metal", "hiddenStems": ["庚","壬","戊"]},
+      "酉": {"pinyin": "You", "zodiac": "Rooster", "season": "Mid-Autumn", "element": "Metal", "hiddenStems": ["辛"]},
+      "戌": {"pinyin": "Xu", "zodiac": "Dog", "season": "Late Autumn", "element": "Earth", "hiddenStems": ["戊","辛","丁"]},
+      "亥": {"pinyin": "Hai", "zodiac": "Pig", "season": "Early Winter", "element": "Water", "hiddenStems": ["壬","甲"]}
+    }
+  },
+
+  "fiveElements": {
+    "description": "The Five Elements (五行 / Wu Xing) and their relationships.",
+    "generatingCycle": {
+      "description": "The nurturing cycle: each element generates (feeds) the next.",
+      "sequence": ["Wood → Fire → Earth → Metal → Water → Wood"],
+      "rules": {
+        "Wood feeds Fire": "Wood burns to create Fire — growth fuels passion",
+        "Fire creates Earth": "Fire produces ash, enriching Earth — passion grounds into stability",
+        "Earth bears Metal": "Earth compresses to form Metal — stability crystallizes into structure",
+        "Metal enriches Water": "Metal condenses moisture into Water — structure channels wisdom",
+        "Water nourishes Wood": "Water enables Wood to grow — wisdom feeds vision"
+      }
+    },
+    "controllingCycle": {
+      "description": "The balancing cycle: each element controls (restrains) another — not destruction, but regulation.",
+      "sequence": ["Wood controls Earth → Earth controls Water → Water controls Fire → Fire controls Metal → Metal controls Wood"],
+      "rules": {
+        "Wood restrains Earth": "Tree roots stabilize soil — vision gives shape to practicality",
+        "Earth contains Water": "Riverbanks guide water flow — grounding channels emotion",
+        "Water regulates Fire": "Water keeps fire from raging — wisdom tempers passion",
+        "Fire refines Metal": "Fire melts and shapes metal — passion transforms structure",
+        "Metal prunes Wood": "Metal tools trim excess growth — discernment focuses vision"
+      }
+    },
+    "elementTraits": {
+      "Wood": {
+        "positive": "Growth-oriented, visionary, flexible, compassionate, pioneering",
+        "growthEdge": "Can overextend; may struggle with follow-through; needs Metal to focus",
+        "lifeDimensions": "Vision, growth, new beginnings, education, expansion"
+      },
+      "Fire": {
+        "positive": "Passionate, expressive, warm, charismatic, action-oriented",
+        "growthEdge": "Can burn out; may overwhelm others; needs Water for sustainable warmth",
+        "lifeDimensions": "Passion, expression, joy, social connection, visibility"
+      },
+      "Earth": {
+        "positive": "Stable, reliable, nurturing, practical, grounded",
+        "growthEdge": "Can become stuck or overly cautious; needs Wood to inspire movement",
+        "lifeDimensions": "Stability, resources, health, family, practicality"
+      },
+      "Metal": {
+        "positive": "Discerning, principled, structured, refined, just",
+        "growthEdge": "Can become rigid or overly critical; needs Fire to soften and warm",
+        "lifeDimensions": "Structure, boundaries, justice, refinement, completion"
+      },
+      "Water": {
+        "positive": "Intuitive, wise, adaptable, deep, resourceful",
+        "growthEdge": "Can become isolated or overwhelmed by emotion; needs Earth to anchor",
+        "lifeDimensions": "Wisdom, intuition, communication, flow, inner world"
+      }
+    }
+  },
+
+  "tenGodsRules": {
+    "description": "How to determine the Ten Gods (十神 / Shi Shen) from the Day Master. Given a Day Master stem D and another stem S, determine the Ten God relationship based on (1) Five Element relationship and (2) polarity match.",
+    "determinationMatrix": {
+      "sameElement_samePolarity": "Friend (比肩 / Bi Jian)",
+      "sameElement_oppositePolarity": "Rob Wealth (劫财 / Jie Cai)",
+      "output_samePolarity": "Eating God (食神 / Shi Shen)",
+      "output_oppositePolarity": "Hurting Officer (伤官 / Shang Guan)",
+      "wealth_samePolarity": "Direct Wealth (正财 / Zheng Cai)",
+      "wealth_oppositePolarity": "Indirect Wealth (偏财 / Pian Cai)",
+      "officer_samePolarity": "Direct Officer (正官 / Zheng Guan)",
+      "officer_oppositePolarity": "Seven Killings (七杀 / Qi Sha)",
+      "resource_samePolarity": "Direct Resource (正印 / Zheng Yin)",
+      "resource_oppositePolarity": "Indirect Resource (偏印 / Pian Yin)"
+    },
+    "relationshipLogic": {
+      "howToRead": "Consider the Day Master as 'Self'. The element the Day Master generates is 'Output' (child). The element the Day Master controls is 'Wealth' (resource). The element that controls the Day Master is 'Officer' (authority). The element that generates the Day Master is 'Resource' (support).",
+      "elementRelationships": {
+        "outputElements": "The element generated BY the Day Master (e.g., Wood generates Fire — so if Day Master is Wood, Fire stems = Output gods)",
+        "wealthElements": "The element controlled BY the Day Master (e.g., Wood controls Earth — so if Day Master is Wood, Earth stems = Wealth gods)",
+        "officerElements": "The element that controls the Day Master (e.g., Metal controls Wood — so if Day Master is Wood, Metal stems = Officer gods)",
+        "resourceElements": "The element that generates the Day Master (e.g., Water generates Wood — so if Day Master is Wood, Water stems = Resource gods)"
+      }
+    },
+    "dayMasterQuickLookup": {
+      "甲_Jia_WoodYang": {
+        "friend": "甲", "robWealth": "乙",
+        "eatingGod": "丙", "hurtingOfficer": "丁",
+        "directWealth": "己", "indirectWealth": "戊",
+        "directOfficer": "辛", "sevenKillings": "庚",
+        "directResource": "癸", "indirectResource": "壬"
+      },
+      "乙_Yi_WoodYin": {
+        "friend": "乙", "robWealth": "甲",
+        "eatingGod": "丁", "hurtingOfficer": "丙",
+        "directWealth": "戊", "indirectWealth": "己",
+        "directOfficer": "庚", "sevenKillings": "辛",
+        "directResource": "壬", "indirectResource": "癸"
+      },
+      "丙_Bing_FireYang": {
+        "friend": "丙", "robWealth": "丁",
+        "eatingGod": "戊", "hurtingOfficer": "己",
+        "directWealth": "辛", "indirectWealth": "庚",
+        "directOfficer": "癸", "sevenKillings": "壬",
+        "directResource": "乙", "indirectResource": "甲"
+      },
+      "丁_Ding_FireYin": {
+        "friend": "丁", "robWealth": "丙",
+        "eatingGod": "己", "hurtingOfficer": "戊",
+        "directWealth": "庚", "indirectWealth": "辛",
+        "directOfficer": "壬", "sevenKillings": "癸",
+        "directResource": "甲", "indirectResource": "乙"
+      },
+      "戊_Wu_EarthYang": {
+        "friend": "戊", "robWealth": "己",
+        "eatingGod": "庚", "hurtingOfficer": "辛",
+        "directWealth": "癸", "indirectWealth": "壬",
+        "directOfficer": "乙", "sevenKillings": "甲",
+        "directResource": "丁", "indirectResource": "丙"
+      },
+      "己_Ji_EarthYin": {
+        "friend": "己", "robWealth": "戊",
+        "eatingGod": "辛", "hurtingOfficer": "庚",
+        "directWealth": "壬", "indirectWealth": "癸",
+        "directOfficer": "甲", "sevenKillings": "乙",
+        "directResource": "丙", "indirectResource": "丁"
+      },
+      "庚_Geng_MetalYang": {
+        "friend": "庚", "robWealth": "辛",
+        "eatingGod": "壬", "hurtingOfficer": "癸",
+        "directWealth": "乙", "indirectWealth": "甲",
+        "directOfficer": "丁", "sevenKillings": "丙",
+        "directResource": "己", "indirectResource": "戊"
+      },
+      "辛_Xin_MetalYin": {
+        "friend": "辛", "robWealth": "庚",
+        "eatingGod": "癸", "hurtingOfficer": "壬",
+        "directWealth": "甲", "indirectWealth": "乙",
+        "directOfficer": "丙", "sevenKillings": "丁",
+        "directResource": "戊", "indirectResource": "己"
+      },
+      "壬_Ren_WaterYang": {
+        "friend": "壬", "robWealth": "癸",
+        "eatingGod": "甲", "hurtingOfficer": "乙",
+        "directWealth": "丁", "indirectWealth": "丙",
+        "directOfficer": "己", "sevenKillings": "戊",
+        "directResource": "庚", "indirectResource": "辛"
+      },
+      "癸_Gui_WaterYin": {
+        "friend": "癸", "robWealth": "壬",
+        "eatingGod": "乙", "hurtingOfficer": "甲",
+        "directWealth": "丙", "indirectWealth": "丁",
+        "directOfficer": "戊", "sevenKillings": "己",
+        "directResource": "辛", "indirectResource": "庚"
+      }
+    }
+  },
+
+  "terminologyMapping": {
+    "description": "New Age / Western-friendly terminology mapping. Left column is the original Eastern concept; right column is the recommended English expression for Destiny Code reports. These replacements ensure cultural accessibility without losing meaning.",
+    "mappings": [
+      {"eastern": "八字 (BaZi)", "recommended": "Energy Blueprint (or 'BaZi Energy Blueprint' on first mention)"},
+      {"eastern": "十天干 (Heavenly Stems)", "recommended": "Energy Codes / Primary Energies"},
+      {"eastern": "十二地支 (Earthly Branches)", "recommended": "Life Pillars / Time Anchors"},
+      {"eastern": "五行 (Wu Xing / Five Elements)", "recommended": "Elemental Energies / Five Elemental Forces"},
+
+      {"eastern": "日主 (Day Master / Ri Zhu)", "recommended": "Core Self Element / Your Signature Energy"},
+      {"eastern": "日柱 (Day Pillar)", "recommended": "Your Core Pillar — representing your essential self and partnership patterns"},
+      {"eastern": "年柱 (Year Pillar)", "recommended": "Your Ancestral & Legacy Pillar — early-life influences and outward-facing energy"},
+      {"eastern": "月柱 (Month Pillar)", "recommended": "Your Career & Action Pillar — how you engage with the world"},
+      {"eastern": "时柱 (Hour Pillar)", "recommended": "Your Inner Compass Pillar — private self, later-life direction, inner world"},
+
+      {"eastern": "食神 (Shi Shen / Eating God)", "recommended": "Creative Flow — your natural talent and joy-expression channel"},
+      {"eastern": "伤官 (Shang Guan / Hurting Officer)", "recommended": "Trailblazer Talent — your innovative, boundary-pushing brilliance"},
+      {"eastern": "正财 (Zheng Cai / Direct Wealth)", "recommended": "Steady Resources — your grounded approach to building stability"},
+      {"eastern": "偏财 (Pian Cai / Indirect Wealth)", "recommended": "Opportunity Magnet — your flair for spotting and seizing possibilities"},
+      {"eastern": "正官 (Zheng Guan / Direct Officer)", "recommended": "Inner Compass — your integrity, discipline, and natural authority"},
+      {"eastern": "七杀 (Qi Sha / Seven Killings)", "recommended": "Intensity Channel — your powerful drive that, when mastered, becomes charismatic leadership"},
+      {"eastern": "正印 (Zheng Yin / Direct Resource)", "recommended": "Wisdom Anchor — your source of inner knowing, calm, and perspective"},
+      {"eastern": "偏印 (Pian Yin / Indirect Resource)", "recommended": "Unconventional Wisdom — your unique lens, intuition, and spiritual receptivity"},
+      {"eastern": "比肩 (Bi Jian / Friend)", "recommended": "Self-Reliance Core — your strong sense of self and independent spirit"},
+      {"eastern": "劫财 (Jie Cai / Rob Wealth)", "recommended": "Connection Catalyst — your social magnetism and collaborative drive"},
+
+      {"eastern": "用神 (Yong Shen / Useful God)", "recommended": "Supportive Element — the energy that brings you into flow"},
+      {"eastern": "忌神 (Ji Shen / Annoying God)", "recommended": "Growth Catalyst — the energy that challenges you to evolve"},
+      {"eastern": "格局 (Ge Ju / Chart Pattern)", "recommended": "Energy Configuration / Blueprint Architecture"},
+      {"eastern": "身强 (Body Strong / Shen Qiang)", "recommended": "Strong Core — you carry abundant self-energy; you're naturally resilient"},
+      {"eastern": "身弱 (Body Weak / Shen Ruo)", "recommended": "Responsive Core — you're highly attuned to your environment; your strength is adaptability"},
+      {"eastern": "阴阳 (Yin Yang)", "recommended": "Polarity — the receptive (Yin) and active (Yang) dimensions of your energy"},
+      {"eastern": "生克 (Sheng Ke / Generating & Controlling)", "recommended": "Nurturing Cycle & Balancing Cycle — the rhythms of elemental interaction"},
+      {"eastern": "刑冲合害 (Clash/Harm/Punish/Harm)", "recommended": "Dynamic Interactions — energetic dialogues between elements that create texture and growth"},
+      {"eastern": "天干 (Tian Gan)", "recommended": "Surface Energy — visible traits and conscious patterns"},
+      {"eastern": "地支 (Di Zhi)", "recommended": "Underlying Current — deeper drives and subconscious patterns"},
+      {"eastern": "长生十二宫 (12 Stages of Life Cycle)", "recommended": "Energy Lifecycle — where each element is in its natural rhythm of expression"},
+      {"eastern": "大运 (Da Yun / 10-Year Luck Pillar)", "recommended": "Life Season — the overarching energetic theme of a decade (V2 feature)"},
+      {"eastern": "流年 (Liu Nian / Annual Cycle)", "recommended": "Annual Current — the year's energetic theme (V2 feature)"},
+      {"eastern": "五合 (Five Combinations)", "recommended": "Elemental Alignments — when stems harmonize to create new expressions"}
+    ]
+  },
+
+  "patternTemplates": {
+    "description": "Common BaZi chart patterns (格局 / Ge Ju) and their recommended interpretation templates. Each pattern comes with a personality profile and a 'growth edge' framing.",
+    "patterns": {
+      "食神生财": {
+        "name": "Creative Flow Generating Resources (Shi Shen Sheng Cai)",
+        "description": "Eating God produces Wealth — creative talent leads to material and personal abundance.",
+        "personality": "You possess a rare combination: natural creative talent paired with an instinct for turning that creativity into tangible results. This is the energy of the artist-entrepreneur — someone whose joy and self-expression naturally attracts resources and opportunities. You're likely someone who doesn't feel like you're 'working' when you're in your flow state.",
+        "growthEdge": "The shadow side of this abundant creative energy is a tendency toward overindulgence or scattering your gifts across too many projects. Your growth invitation is to develop the Metal discernment to focus your creative fire — learning that saying 'no' to some possibilities deepens the ones you say 'yes' to.",
+        "careerDirections": ["Creative entrepreneurship", "Content creation", "Design", "Culinary arts", "Coaching", "Entertainment", "Any role where creative output translates to value"]
+      },
+
+      "伤官配印": {
+        "name": "Trailblazer Tempered by Wisdom (Shang Guan Pei Yin)",
+        "description": "Hurting Officer paired with Resource — rebellious brilliance balanced by wisdom and structure.",
+        "personality": "You carry one of the most intellectually gifted configurations: a mind that naturally questions everything (Hurting Officer) combined with a deep well of wisdom and discernment (Resource). You see what others miss. Your ideas don't just color outside the lines — they redraw the entire canvas. This is the energy of the visionary reformer.",
+        "growthEdge": "Your brilliance can sometimes create distance — others may struggle to keep up, or may feel intimidated by your sharpness. Your growth invitation is to wrap your insights in warmth. The wisdom (Resource) in your chart is the bridge: when you lead with compassion, your ideas become movements.",
+        "careerDirections": ["Thought leadership", "Academia", "Strategic consulting", "Writing", "Technology innovation", "Reform-oriented roles"]
+      },
+
+      "正官正印": {
+        "name": "Integrity Anchored in Wisdom (Zheng Guan Zheng Yin)",
+        "description": "Direct Officer paired with Direct Resource — a classic configuration of integrity, wisdom, and steady leadership.",
+        "personality": "Your blueprint carries an inherently trustworthy architecture. The Direct Officer gives you a natural sense of duty and an internal moral compass that others instinctively respect. Paired with Direct Resource, you don't just know what's right — you understand why. You are someone who leads not through force but through the quiet authority of character.",
+        "growthEdge": "The shadow of this configuration is rigidity — a tendency to hold yourself (and others) to standards that leave little room for the beautiful messiness of being human. Your growth invitation is to soften your inner critic and trust that integrity doesn't require perfection.",
+        "careerDirections": ["Law and governance", "Education", "Non-profit leadership", "Human resources", "Compliance and ethics", "Healthcare administration", "Mentoring and coaching"]
+      },
+
+      "财官双美": {
+        "name": "Resources and Authority in Harmony (Cai Guan Shuang Mei)",
+        "description": "Both Wealth and Officer are strong and well-balanced — indicating capacity for both building resources and holding responsibility.",
+        "personality": "You have a rare energetic balance between the drive to build (Wealth) and the capacity to lead (Officer). This is a blueprint that can hold both the vision and the execution — the strategy and the people. You're likely someone who naturally rises to positions of trust, not because you chase them, but because your energy signals reliability and competence.",
+        "growthEdge": "With both Wealth and Officer strong, the risk is over-identification with external achievement. Your growth invitation is to remember that your worth is inherent, not earned. The most important resource to build is your inner peace; the most important authority to hold is over your own boundaries.",
+        "careerDirections": ["Executive leadership", "Finance", "Business ownership", "Project management", "Institutional leadership", "High-responsibility roles requiring both vision and execution"]
+      },
+
+      "杀印相生": {
+        "name": "Intensity Transmuted into Wisdom (Sha Yin Xiang Sheng)",
+        "description": "Seven Killings generating Resource — powerful drive is channeled through wisdom and knowledge. One of the most transformative configurations.",
+        "personality": "You carry one of the most potent and transformative energy signatures in BaZi. The Seven Killings gives you an intensity and drive that most people can't match — a kind of internal pressure that, when harnessed, becomes extraordinary resilience and leadership. Because it feeds your Resource star, this intensity doesn't just push you; it makes you wiser. You grow through challenges that would break others.",
+        "growthEdge": "The Seven Killings energy, left unchanneled, can manifest as internal restlessness, anxiety, or a sense of always being 'under pressure.' Your life's curriculum is to learn to channel this intensity constructively. Physical discipline, structured learning, and meaningful challenges are your alchemical tools. You don't need less intensity — you need the right containers for it.",
+        "careerDirections": ["Crisis leadership", "Military/security (or modern equivalents)", "Competitive sports", "Entrepreneurship", "Surgery and precision medicine", "Turnaround management", "Any role requiring grace under pressure"]
+      },
+
+      "从格": {
+        "name": "Following Pattern (Cong Ge)",
+        "genericDescription": "When the Day Master is extremely weak and the chart is dominated by one or two elements, the person's energy follows the dominant flow rather than standing as an independent force.",
+        "personality": "Your chart follows a unique architecture where one element so dominates the landscape that your energy naturally aligns with it rather than standing apart. This gives you an almost chameleon-like adaptability — you can thrive in environments that would overwhelm others because you don't resist the current; you flow with it.",
+        "growthEdge": "The invitation here is to discern when 'going with the flow' serves your highest good and when it becomes a pattern of self-abandonment. Your adaptability is a superpower; your challenge is to wield it consciously, not reflexively.",
+        "note": "This is a broad category that requires specific sub-pattern identification (从财/从杀/从儿/从强) for detailed interpretation."
+      }
+    }
+  },
+
+  "pillarMeanings": {
+    "description": "What each of the Four Pillars represents in a person's life. Used to contextualize Ten Gods based on their pillar location.",
+    "yearPillar": {
+      "name": "Ancestral & Legacy Pillar",
+      "timeRange": "Early childhood (0-16), ancestral influences, outward appearance to society, grandparents",
+      "interpretationContext": "Ten Gods here speak to inherited patterns, the energy you present to the outside world, and your relationship with tradition and authority."
+    },
+    "monthPillar": {
+      "name": "Career & Action Pillar",
+      "timeRange": "Young adulthood (17-32), career development, parents (especially father), work ethic",
+      "interpretationContext": "Ten Gods here speak to how you engage with work, your professional identity, and the energy you bring to pursuing goals."
+    },
+    "dayPillar": {
+      "name": "Core Self & Partnership Pillar",
+      "timeRange": "Mid-life (33-48), self-identity, marriage/partnership, the 'spouse palace' (日支)",
+      "interpretationContext": "The Day Stem IS the Day Master — it represents your essential self. The Day Branch represents your inner world and partnership patterns."
+    },
+    "hourPillar": {
+      "name": "Inner Compass & Legacy Pillar",
+      "timeRange": "Later life (49+), children, inner thoughts, creative expression, dreams, legacy",
+      "interpretationContext": "Ten Gods here speak to your private self, your relationship with the next generation, and the mark you leave on the world."
+    }
+  },
+
+  "usefulGodsLogic": {
+    "description": "How to determine Useful Gods (用神 / Yong Shen) — the elements that bring balance and support to the chart.",
+    "generalPrinciple": "A BaZi chart is balanced when the Day Master is neither too strong nor too weak. If the Day Master is strong, elements that output (child), control (wealth), or restrain (officer) the Day Master become favorable. If the Day Master is weak, elements that support (resource) or are the same as (friend/rob wealth) the Day Master become favorable.",
+    "dayMasterStrong": {
+      "description": "When the Day Master is strong (身强), the chart needs release and channeling.",
+      "favorableActions": ["Output (express energy creatively)", "Wealth (channel energy into building resources)", "Officer (direct energy through discipline and structure)"],
+      "unfavorableActions": ["Resource (adds more support to an already-strong self)", "Friend/Rob Wealth (amplifies the oversupply of self-energy)"]
+    },
+    "dayMasterWeak": {
+      "description": "When the Day Master is weak (身弱), the chart needs support and nourishment.",
+      "favorableActions": ["Resource (nourish and strengthen the self)", "Friend/Rob Wealth (peer support and collaboration)"],
+      "unfavorableActions": ["Output (further drains weak self-energy)", "Wealth (taxes limited energy to pursue resources)", "Officer (over-control of an already-weak self)"]
+    },
+    "dayMasterBalanced": {
+      "description": "When the Day Master is balanced, the focus is on maintaining harmony.",
+      "favorableActions": ["All elements in moderation", "The element that facilitates smooth flow between the strongest and weakest energies in the chart"]
+    }
+  },
+
+  "dayMasterStrengthAssessment": {
+    "description": "Quick assessment rules for determining Day Master strength (身强/身弱). This is a simplified heuristic; complete assessment requires full chart analysis.",
+    "factorsThatStrengthen": [
+      "Day Master stem is born in season (e.g., Wood DM in spring months: 寅卯辰)",
+      "Many Friend (比肩) or Rob Wealth (劫财) Ten Gods in the chart",
+      "Strong Direct/Indirect Resource (正印/偏印) supporting the Day Master",
+      "Day Master sits on a branch that generates it (e.g., Wood DM on 子/亥 Water branch)"
+    ],
+    "factorsThatWeaken": [
+      "Day Master is out of season (e.g., Wood DM in autumn months: 申酉戌)",
+      "Many Output Ten Gods (Eating God / Hurting Officer) draining the Day Master",
+      "Strong Officer gods (Direct Officer / Seven Killings) controlling the Day Master",
+      "Strong Wealth gods (Direct/Indirect Wealth) that the Day Master must control"
+    ]
+  }
+}
