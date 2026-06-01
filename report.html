@@ -84,9 +84,9 @@ if (!year || !month || !day) {
   if (saved) {
     const p = JSON.parse(saved);
     window.location.search = `?name=${encodeURIComponent(p.name || 'Friend')}&year=${p.year}&month=${p.month}&day=${p.day}&hour=${p.hour || '12'}${checkoutId ? '&checkout_id=' + encodeURIComponent(checkoutId) : ''}`;
-    return;
+  } else {
+    document.getElementById('content').innerHTML = '<div class="error"><p>Missing birth data. <a href="/" style="color:var(--gold)">Go back</a> to get your preview.</p></div>';
   }
-  document.getElementById('content').innerHTML = '<div class="error"><p>Missing birth data. <a href="/" style="color:var(--gold)">Go back</a> to get your preview.</p></div>';
 } else {
   init();
 }
