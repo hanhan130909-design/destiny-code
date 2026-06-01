@@ -66,7 +66,7 @@
 </div>
 
 <script>
-const CHECKOUT_LINK = 'https://hanhan.lemonsqueezy.com/checkout/buy/61cbe329-efcd-469c-8eb9-7ec7e6927376';
+const CHECKOUT_LINK = 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=hanhan130909@gmail.com&item_name=Destiny+Code+Complete+Blueprint&amount=29.00&currency_code=USD';
 const VERIFY_API = '/api/verify-session';
 const REPORT_API = '/api/report';
 const params = new URLSearchParams(location.search);
@@ -76,14 +76,15 @@ const year = params.get('year');
 const month = params.get('month');
 const day = params.get('day');
 const hour = params.get('hour') || '12';
-const checkoutId = params.get('checkout_id') || params.get('session_id'); // LemonSqueezy or legacy Stripe
+const checkoutId = params.get('checkout_id') || params.get('session_id');
+const paypalPaid = params.get('st') === 'Completed'; // PayPal return
 
 if (!year || !month || !day) {
   // Try localStorage (return from checkout)
   const saved = localStorage.getItem('destiny_report_params');
   if (saved) {
     const p = JSON.parse(saved);
-    window.location.search = `?name=${encodeURIComponent(p.name || 'Friend')}&year=${p.year}&month=${p.month}&day=${p.day}&hour=${p.hour || '12'}${checkoutId ? '&checkout_id=' + encodeURIComponent(checkoutId) : ''}`;
+    window.location.search = `?name=${encodeURIComponent(p.name || 'Friend')}&year=${p.year}&month=${p.month}&day=${p.day}&hour=${p.hour || '12'}${checkoutId ? '&checkout_id=' + encodeURIComponent(checkoutId) : ''}${paypalPaid ? '&st=Completed' : ''}`;
   } else {
     document.getElementById('content').innerHTML = '<div class="error"><p>Missing birth data. <a href="/" style="color:var(--gold)">Go back</a> to get your preview.</p></div>';
   }
@@ -92,7 +93,19 @@ if (!year || !month || !day) {
 }
 
 async function init() {
-  // If we have a session_id, verify payment first
+  // PayPal return — show full report
+  if (paypalPaid) {
+    try {
+      const reportUrl = `${REPORT_API}?name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}`;
+      const r = await fetch(reportUrl);
+      const d = await r.json();
+      return renderFull(d);
+    } catch(e) {
+      console.error('Report error:', e);
+    }
+  }
+
+  // If we have a checkout_id, verify payment first
   if (checkoutId) {
     try {
       const verifyUrl = `${VERIFY_API}?checkout_id=${encodeURIComponent(checkoutId)}&name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}`;
@@ -186,7 +199,7 @@ function renderPreview(d) {
       <button id="checkout-btn" onclick="startCheckout()">
         Get Full Report — $29 →
       </button>
-      <p style="font-size:11px;color:var(--text-dim);margin-top:8px">Instant delivery · Secure payment via Stripe · One-time purchase</p>
+      <p style="font-size:11px;color:var(--text-dim);margin-top:8px">Instant delivery · Secure payment via PayPal · One-time purchase</p>
     </div>
   `;
 }
@@ -263,19 +276,16 @@ async function startCheckout() {
   const btn = document.getElementById('checkout-btn');
   if (!btn) return;
   btn.disabled = true;
-  btn.textContent = 'Redirecting to secure checkout…';
+  btn.textContent = 'Redirecting to PayPal…';
 
-  const birthdate = `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
-  const birthtime = `${hour.padStart(2,'0')}:00`;
-
-  // Save params for return from checkout
+  // Save params for return from PayPal
   localStorage.setItem('destiny_report_params', JSON.stringify({
     name, year, month, day, hour
   }));
 
-  // Redirect to Lemon Squeezy with dynamic redirect URL
-  const redirectUrl = encodeURIComponent('https://metaphysics-landing.vercel.app/report');
-  window.location.href = `${CHECKOUT_LINK}?checkout[redirect_url]=${redirectUrl}`;
+  // PayPal redirect with return URL
+  const returnUrl = encodeURIComponent('https://metaphysics-landing.vercel.app/report');
+  window.location.href = `${CHECKOUT_LINK}&return=${returnUrl}&cancel_return=${returnUrl}`;
 }
 
 function esc(s) { return String(s).replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]); }
