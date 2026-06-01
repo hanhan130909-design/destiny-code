@@ -427,7 +427,7 @@
     })
     .then(r => r.json())
     .then(result => {
-      if (result.ok) showInlinePreview(result);
+      if (result.ok) showInlinePreview(result, data);
     })
     .catch(err => console.log(err))
     .finally(() => {
@@ -445,8 +445,12 @@
     return false;
   });
 
-  function showInlinePreview(data) {
-    // Insert preview card after the form
+  function showInlinePreview(result, birthData) {
+    const data = result;
+    const bd = birthData;
+    const dateParts = bd.birthdate.split('-');
+    const timeParts = (bd.birthtime || '12:00').split(':');
+    const reportUrl = `/report?name=${encodeURIComponent(bd.name)}&year=${dateParts[0]}&month=${dateParts[1]}&day=${dateParts[2]}&hour=${timeParts[0]}`;
     const preview = document.createElement('div');
     preview.className = 'form-card';
     preview.style.marginTop = '16px';
@@ -474,6 +478,13 @@
       <a href="https://metaphysics-landing.vercel.app/blog" style="display:block;text-align:center;color:#c9a96e;text-decoration:none;font-size:13px;padding:8px">
         Read about your element type in our blog →
       </a>
+      <div style="text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <a href="${reportUrl}"
+           style="display:inline-block;background:var(--gold);color:var(--bg);padding:12px 32px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px">
+          Unlock Your Full Blueprint — $29 →
+        </a>
+        <p style="font-size:11px;color:var(--text-dim);margin-top:8px">800+ word complete interpretation · Career path · Relationships · Life chapters</p>
+      </div>
     `;
     formSection.appendChild(preview);
   }
