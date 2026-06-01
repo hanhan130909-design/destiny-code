@@ -76,7 +76,7 @@ const year = params.get('year');
 const month = params.get('month');
 const day = params.get('day');
 const hour = params.get('hour') || '12';
-const sessionId = params.get('session_id');
+const checkoutId = params.get('checkout_id') || params.get('session_id'); // LemonSqueezy or legacy Stripe
 
 if (!year || !month || !day) {
   document.getElementById('content').innerHTML = '<div class="error"><p>Missing birth data. <a href="/" style="color:var(--gold)">Go back</a> to get your preview.</p></div>';
@@ -86,9 +86,9 @@ if (!year || !month || !day) {
 
 async function init() {
   // If we have a session_id, verify payment first
-  if (sessionId) {
+  if (checkoutId) {
     try {
-      const verifyUrl = `${VERIFY_API}?session_id=${encodeURIComponent(sessionId)}&name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}`;
+      const verifyUrl = `${VERIFY_API}?checkout_id=${encodeURIComponent(checkoutId)}&name=${encodeURIComponent(name)}&year=${year}&month=${month}&day=${day}&hour=${hour}`;
       const r = await fetch(verifyUrl);
       const v = await r.json();
       if (v.paid && v.report) {

@@ -1,13 +1,15 @@
 """
-Vercel API — Create Stripe Checkout Session
+Vercel API — Create Lemon Squeezy Checkout
 POST /api/create-checkout
-Body: {name, email, birthdate, birthtime, birthplace}
-Returns: {url: "https://checkout.stripe.com/..."}
+Body: {name, birthdate, birthtime}
+Returns: {url: "https://..."}
 """
 import os, json
 from http.server import BaseHTTPRequestHandler
 
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+LEMONSQUEEZY_KEY = os.environ.get("LEMONSQUEEZY_API_KEY", "")
+STORE_ID = os.environ.get("LEMONSQUEEZY_STORE_ID", "94d59cef-dbb8-4ea5-b178-d2540fcd6919")
+VARIANT_ID = os.environ.get("LEMONSQUEEZY_VARIANT_ID", "")
 BASE_URL = "https://metaphysics-landing.vercel.app"
 
 class handler(BaseHTTPRequestHandler):
@@ -21,12 +23,14 @@ class handler(BaseHTTPRequestHandler):
             return
 
         name = data.get("name", "Friend")
-        email = data.get("email", "")
         birthdate = data.get("birthdate", "")
         birthtime = data.get("birthtime", "12:00")
 
         if not birthdate:
             self._respond(400, {"error": "birthdate is required"})
+            return
+        if not VARIANT_ID:
+            self._respond(500, {"error": "Variant not configured"})
             return
 
         date_parts = birthdate.split("-")
@@ -39,34 +43,49 @@ class handler(BaseHTTPRequestHandler):
             f"&hour={time_parts[0]}"
         )
 
-        import stripe
-        stripe.api_key = STRIPE_SECRET_KEY
+        import urllib.request
+
+        payload = {
+            "data": {
+                "type": "checkouts",
+                "attributes": {
+                    "product_options": {
+                        "redirect_url": f"{BASE_URL}/report?checkout_id={{CHECKOUT_ID}}&{report_params}",
+                        "description": f"Complete Energy Blueprint for {name}",
+                    },
+                    "checkout_data": {
+                        "custom": {
+                            "name": name,
+                            "birthdate": birthdate,
+                            "birthtime": birthtime,
+                        }
+                    },
+                },
+                "relationships": {
+                    "store": {"data": {"type": "stores", "id": STORE_ID}},
+                    "variant": {"data": {"type": "variants", "id": VARIANT_ID}},
+                },
+            }
+        }
 
         try:
-            session = stripe.checkout.Session.create(
-                payment_method_types=["card"],
-                line_items=[{
-                    "price_data": {
-                        "currency": "usd",
-                        "product_data": {
-                            "name": "Destiny Code — Complete Energy Blueprint",
-                            "description": "Personalized 800+ word BaZi interpretation with career, relationships & life chapters guidance.",
-                        },
-                        "unit_amount": 2900,  # $29.00
-                    },
-                    "quantity": 1,
-                }],
-                mode="payment",
-                success_url=f"{BASE_URL}/report?session_id={{CHECKOUT_SESSION_ID}}&{report_params}",
-                cancel_url=f"{BASE_URL}/",
-                metadata={
-                    "name": name,
-                    "email": email,
-                    "birthdate": birthdate,
-                    "birthtime": birthtime,
+            req = urllib.request.Request(
+                "https://api.lemonsqueezy.com/v1/checkouts",
+                data=json.dumps(payload).encode(),
+                headers={
+                    "Authorization": f"Bearer {LEMONSQUEEZY_KEY}",
+                    "Accept": "application/vnd.api+json",
+                    "Content-Type": "application/vnd.api+json",
                 },
+                method="POST",
             )
-            self._respond(200, {"url": session.url, "session_id": session.id})
+            with urllib.request.urlopen(req) as resp:
+                result = json.loads(resp.read())
+            checkout_url = result.get("data", {}).get("attributes", {}).get("url", "")
+            checkout_id = result.get("data", {}).get("id", "")
+            self._respond(200, {"url": checkout_url, "checkout_id": checkout_id})
+        except urllib.error.HTTPError as e:
+            self._respond(e.code, {"error": e.read().decode()[:500]})
         except Exception as e:
             self._respond(500, {"error": str(e)})
 
@@ -92,6 +111,5 @@ class handler(BaseHTTPRequestHandler):
 
     @staticmethod
     def _qs(s):
-        """Minimal URL query-string encoding for safe values."""
         from urllib.parse import quote
         return quote(str(s), safe="")
