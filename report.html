@@ -66,7 +66,7 @@
 </div>
 
 <script>
-const CHECKOUT_API = '/api/create-checkout';
+const CHECKOUT_LINK = 'https://hanhan.lemonsqueezy.com/checkout/buy/61cbe329-efcd-469c-8eb9-7ec7e6927376';
 const VERIFY_API = '/api/verify-session';
 const REPORT_API = '/api/report';
 const params = new URLSearchParams(location.search);
@@ -79,6 +79,13 @@ const hour = params.get('hour') || '12';
 const checkoutId = params.get('checkout_id') || params.get('session_id'); // LemonSqueezy or legacy Stripe
 
 if (!year || !month || !day) {
+  // Try localStorage (return from checkout)
+  const saved = localStorage.getItem('destiny_report_params');
+  if (saved) {
+    const p = JSON.parse(saved);
+    window.location.search = `?name=${encodeURIComponent(p.name || 'Friend')}&year=${p.year}&month=${p.month}&day=${p.day}&hour=${p.hour || '12'}${checkoutId ? '&checkout_id=' + encodeURIComponent(checkoutId) : ''}`;
+    return;
+  }
   document.getElementById('content').innerHTML = '<div class="error"><p>Missing birth data. <a href="/" style="color:var(--gold)">Go back</a> to get your preview.</p></div>';
 } else {
   init();
@@ -261,25 +268,14 @@ async function startCheckout() {
   const birthdate = `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
   const birthtime = `${hour.padStart(2,'0')}:00`;
 
-  try {
-    const r = await fetch(CHECKOUT_API, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({name, birthdate, birthtime})
-    });
-    const result = await r.json();
-    if (result.url) {
-      window.location.href = result.url;
-    } else {
-      btn.disabled = false;
-      btn.textContent = 'Get Full Report — $29 →';
-      alert('Checkout unavailable right now. Please try again.');
-    }
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = 'Get Full Report — $29 →';
-    alert('Network error. Please try again.');
-  }
+  // Save params for return from checkout
+  localStorage.setItem('destiny_report_params', JSON.stringify({
+    name, year, month, day, hour
+  }));
+
+  // Redirect to Lemon Squeezy with dynamic redirect URL
+  const redirectUrl = encodeURIComponent('https://metaphysics-landing.vercel.app/report');
+  window.location.href = `${CHECKOUT_LINK}?checkout[redirect_url]=${redirectUrl}`;
 }
 
 function esc(s) { return String(s).replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]); }
