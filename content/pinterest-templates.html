@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destiny Code — Pinterest Pin Generator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;display:flex;flex-wrap:wrap;gap:40px;padding:40px;justify-content:center}
+
+.pin{
+  width:350px;height:525px; /* scaled down from 1000x1500 for display */
+  position:relative;
+  overflow:hidden;
+  border-radius:12px;
+  cursor:pointer;
+  transition:transform 0.2s;
+}
+.pin:hover{transform:scale(1.02)}
+
+/* --- Template 1: Dark Cosmic --- */
+.pin.cosmic{background:linear-gradient(160deg,#0a0c18 0%,#111530 40%,#1a1040 100%)}
+.pin.cosmic::before{
+  content:'';
+  position:absolute;
+  top:20%;left:10%;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(201,169,110,0.15) 0%,transparent 70%);
+  border-radius:50%;
+}
+.cosmic .stars{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:70%
+}
+.cosmic .content{
+  position:absolute;
+  bottom:40px;left:0;right:0;
+  text-align:center;
+  padding:0 24px
+}
+.cosmic .headline{
+  font-family:Georgia,serif;
+  font-size:26px;
+  font-weight:700;
+  color:#e8ecf1;
+  line-height:1.25;
+  white-space:pre-line;
+  text-shadow:0 2px 20px rgba(201,169,110,0.3)
+}
+.cosmic .subtitle{
+  font-family:Georgia,serif;
+  font-size:12px;
+  color:#c9a96e;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  margin-top:12px
+}
+.cosmic .domain{
+  position:absolute;
+  bottom:12px;
+  width:100%;
+  text-align:center;
+  font-family:Georgia,serif;
+  font-size:11px;
+  color:#5c5770;
+  letter-spacing:1px
+}
+
+/* --- Template 2: Gold Minimal --- */
+.pin.minimal{background:#0a0c14}
+.pin.minimal .accent-line{
+  position:absolute;
+  top:35px;left:35px;
+  width:50px;height:2px;
+  background:#c9a96e
+}
+.minimal .content{
+  position:absolute;
+  top:60px;left:35px;right:35px
+}
+.minimal .headline{
+  font-family:Georgia,serif;
+  font-size:30px;
+  font-weight:700;
+  color:#e8ecf1;
+  line-height:1.2;
+  white-space:pre-line
+}
+.minimal .subtitle{
+  font-family:Georgia,serif;
+  font-size:12px;
+  color:#c9a96e;
+  margin-top:20px;
+  letter-spacing:2px;
+  text-transform:uppercase
+}
+.minimal .symbol{
+  position:absolute;
+  bottom:35px;left:35px;
+  font-size:32px;
+  opacity:0.6
+}
+
+/* --- Template 3: Element Gradient --- */
+.pin.fire{background:linear-gradient(160deg,#1a0a0a 0%,#2a1010 50%,#3a1515 100%)}
+.pin.fire .content{
+  position:absolute;
+  inset:40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center
+}
+.pin.fire .headline{
+  font-family:Georgia,serif;
+  font-size:28px;
+  font-weight:700;
+  color:#f4a460;
+  line-height:1.25;
+  white-space:pre-line
+}
+.pin.fire .subtitle{
+  font-family:Georgia,serif;
+  font-size:13px;
+  color:#e8a87c;
+  margin-top:16px
+}
+.pin.fire .emoji{
+  position:absolute;
+  top:25px;right:25px;
+  font-size:28px
+}
+</style>
+</head>
+<body>
+
+<!-- Cosmic templates for each pin -->
+<div class="pin cosmic" id="pin1">
+  <canvas class="stars" id="stars1"></canvas>
+  <div class="content">
+    <div class="headline">WHICH OF THE 10<br>DAY MASTERS<br>ARE YOU?</div>
+    <div class="subtitle">Discover your BaZi type in 60 seconds</div>
+  </div>
+  <div class="domain">destinycode.com</div>
+</div>
+
+<div class="pin minimal" id="pin2">
+  <div class="accent-line"></div>
+  <div class="content">
+    <div class="headline">YOUR CAREER<br>IS WRITTEN IN<br>YOUR BIRTH CHART</div>
+    <div class="subtitle">The Month Pillar reveals your path</div>
+  </div>
+  <div class="symbol">☯</div>
+</div>
+
+<div class="pin fire" id="pin3">
+  <div class="emoji">🔥</div>
+  <div class="content">
+    <div class="headline">2026: YEAR OF<br>THE FIRE HORSE</div>
+    <div class="subtitle">Bing Wu — speed, visibility, transformation</div>
+  </div>
+</div>
+
+<div class="pin cosmic" id="pin4">
+  <canvas class="stars" id="stars4"></canvas>
+  <div class="content">
+    <div class="headline">FIVE ELEMENTS<br>PERSONALITY<br>— NO QUIZ NEEDED</div>
+    <div class="subtitle">Your birth date reveals everything</div>
+  </div>
+  <div class="domain">destinycode.com</div>
+</div>
+
+<div class="pin minimal" id="pin5">
+  <div class="accent-line"></div>
+  <div class="content">
+    <div class="headline">ELEMENTAL<br>LOVE<br>COMPATIBILITY</div>
+    <div class="subtitle">BaZi reveals how energies interact</div>
+  </div>
+  <div class="symbol">✦</div>
+</div>
+
+<div class="pin fire" id="pin6">
+  <div class="emoji">💰</div>
+  <div class="content">
+    <div class="headline">YOUR WEALTH<br>STAR<br>REVEALED</div>
+    <div class="subtitle">What your chart says about money</div>
+  </div>
+</div>
+
+<div class="pin cosmic" id="pin7">
+  <canvas class="stars" id="stars7"></canvas>
+  <div class="content">
+    <div class="headline">THE 10<br>DAY MASTERS<br>— WHICH ONE?</div>
+    <div class="subtitle">Pioneer · Diplomat · Visionary · Strategist · Anchor</div>
+  </div>
+  <div class="domain">destinycode.com</div>
+</div>
+
+<div class="pin minimal" id="pin8">
+  <div class="accent-line"></div>
+  <div class="content">
+    <div class="headline">FREE BAZI<br>CALCULATOR</div>
+    <div class="subtitle">Your Day Master in 60 seconds — no signup</div>
+  </div>
+  <div class="symbol">☯</div>
+</div>
+
+<div class="pin fire" id="pin9">
+  <div class="emoji">⚖️</div>
+  <div class="content">
+    <div class="headline">BAZI vs<br>WESTERN<br>ASTROLOGY</div>
+    <div class="subtitle">12 signs vs. 1 million+ combinations</div>
+  </div>
+</div>
+
+<div class="pin cosmic" id="pin10">
+  <canvas class="stars" id="stars10"></canvas>
+  <div class="content">
+    <div class="headline">WHY YOU<br>NEVER FEEL<br>LIKE YOU FIT IN</div>
+    <div class="subtitle">The Wandering Star energy, decoded</div>
+  </div>
+  <div class="domain">destinycode.com</div>
+</div>
+
+<script>
+// Generate random stars on canvas backgrounds
+function drawStars(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  canvas.width = parent.offsetWidth;
+  canvas.height = parent.offsetHeight * 0.7;
+  const ctx = canvas.getContext('2d');
+  for (let i = 0; i < 50; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const r = Math.random() * 1.2;
+    const alpha = Math.random() * 0.5 + 0.1;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+  }
+  // Add a few brighter "stars"
+  for (let i = 0; i < 5; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height * 0.6;
+    const r = Math.random() * 1.5 + 0.5;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(201,169,110,0.6)';
+    ctx.fill();
+  }
+}
+
+drawStars('stars1');
+drawStars('stars4');
+drawStars('stars7');
+drawStars('stars10');
+</script>
+
+</body>
+</html>
