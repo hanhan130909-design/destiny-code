@@ -48,6 +48,13 @@
   .related a:hover{color:var(--gold)}
   .related small{display:block;color:var(--text-dim);font-size:12px;margin-top:2px}
   .cta-box a{display:inline-block;background:var(--gold);color:var(--bg);padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;margin-top:12px}
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin:24px 0}
+  .toc h3{font-size:14px;color:var(--gold);margin:0 0 12px;text-transform:uppercase;letter-spacing:1px}
+  .toc ol{margin:0;padding-left:20px}
+  .toc li{margin-bottom:6px;font-size:14px}
+  .toc a{color:var(--text-dim);text-decoration:none}
+  .toc a:hover{color:var(--gold)}
+  .last-updated{font-size:12px;color:var(--text-dim);margin-top:12px;font-style:italic}
   footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center}
   footer a{color:var(--gold);text-decoration:none;font-size:14px}
   @media(max-width:600px){h1{font-size:24px}td,th{font-size:12px;padding:8px 10px}}
@@ -88,7 +95,17 @@
     <p>They're both ancient. They're both complex. But they operate on entirely different principles — and asking which is "more accurate" might be the wrong question entirely.</p>
   </div>
 
-  <h2>At a Glance</h2>
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#at-a-glance">At a Glance</a></li>
+      <li><a href="#precision-question">The Precision Question</a></li>
+      <li><a href="#what-each-does-best">What Each System Does Best</a></li>
+      <li><a href="#real-answer">The Real Answer</a></li>
+    </ol>
+  </div>
+
+  <h2 id="at-a-glance">At a Glance</h2>
 
   <table>
     <tr><th>Dimension</th><th>Western Astrology</th><th>BaZi (Eastern)</th></tr>
@@ -102,12 +119,12 @@
     <tr><td>Philosophical root</td><td>Hellenistic / Babylonian</td><td>Taoist / Five Elements</td></tr>
   </table>
 
-  <h2>The Precision Question</h2>
+  <h2 id="precision-question">The Precision Question</h2>
   <p>Western astrology divides humanity into 12 primary categories. With rising signs, moon signs, and planetary placements, the combinations expand — but the starting point is a broad brush.</p>
   <p>BaZi generates a different chart for every <strong>two-hour window</strong> across every day of every year. The mathematics produce configurations that repeat only every 60 years — and even then, the gender of the person changes the interpretation (the Ten Gods reverse polarity).</p>
   <p>On pure granularity, BaZi offers more differentiation. Whether that translates to more "accuracy" depends on what you're measuring. <a href="/blog/baZi-vs-western-astrology" style="color:var(--gold)">Read our detailed BaZi vs Western Astrology comparison →</a></p>
 
-  <h2>What Each System Does Best</h2>
+  <h2 id="what-each-does-best">What Each System Does Best</h2>
 
   <h3>Western Astrology excels at:</h3>
   <ul style="margin:0 0 20px 24px;color:var(--text-dim)">
@@ -125,7 +142,7 @@
     <li style="margin-bottom:8px;font-size:15px"><strong>Life chapter mapping</strong> — 10-year Luck Pillars show clear phases of life development</li>
   </ul>
 
-  <h2>The Real Answer</h2>
+  <h2 id="real-answer">The Real Answer</h2>
   <p>They're not competitors. They're different languages describing the same thing — you. Western astrology speaks the language of <strong>myth and psychology</strong>. BaZi speaks the language of <strong>elements and cycles</strong>.</p>
   <p>Many practitioners use both. A Western chart might tell you <em>why</em> you feel a certain way. A BaZi chart might tell you <em>what to do about it</em>. <a href="/blog/five-elements-personality" style="color:var(--gold)">Discover your Five Elements personality type →</a></p>
 
@@ -143,7 +160,10 @@
       <li><a href="/blog/five-elements-personality">The Five Elements Personality Framework</a> <small>How your element type compares to MBTI and other personality systems</small></li>
     </ul>
   </div>
-  <footer><a href="/blog">← Back to Blog</a></footer>
+  <footer>
+    <p class="last-updated">Last updated: June 2026</p>
+    <a href="/blog">← Back to Blog</a>
+  </footer>
 </article>
 </body>
 </html>

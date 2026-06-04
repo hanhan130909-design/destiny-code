@@ -294,8 +294,8 @@ class handler(BaseHTTPRequestHandler):
         birthtime = data.get("birthtime", data.get("Birth Time", "12:00")).strip()
         birthplace = data.get("birthplace", data.get("Birth Place", "")).strip()
 
-        if not name or not email or not birthdate:
-            self._respond(400, {"error": "Missing required fields: name, email, birthdate"})
+        if not name or not birthdate:
+            self._respond(400, {"error": "Missing required fields: name, birthdate"})
             return
 
         # Parse birth date and time
@@ -321,8 +321,10 @@ class handler(BaseHTTPRequestHandler):
             self._respond(500, {"error": f"Chart computation failed: {str(e)}"})
             return
 
-        # Send email
-        email_result = send_preview_email(email, name, result)
+        # Send email only if email address was provided
+        email_result = {"sent": False, "error": "No email provided"}
+        if email:
+            email_result = send_preview_email(email, name, result)
 
         # Notify site owner (non-blocking — won't affect user response)
         notify_result = send_owner_notification(name, birthdate, birthplace, birthtime)
