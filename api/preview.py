@@ -15,6 +15,8 @@ from http.server import BaseHTTPRequestHandler
 # Add project root to path for bazi_chart import
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from api.notify import send_owner_notification
+
 # Resend API key — set in Vercel environment variables
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 FROM_EMAIL = os.environ.get("FROM_EMAIL", "Destiny Code <onboarding@resend.dev>")
@@ -321,6 +323,9 @@ class handler(BaseHTTPRequestHandler):
 
         # Send email
         email_result = send_preview_email(email, name, result)
+
+        # Notify site owner (non-blocking — won't affect user response)
+        notify_result = send_owner_notification(name, birthdate, birthplace, birthtime)
 
         self._respond(200, {
             "ok": True,
