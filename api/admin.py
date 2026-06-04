@@ -1,22 +1,19 @@
 """
 Vercel Serverless Function — Admin Submissions
 
-Stores submissions in-memory + /tmp for Vercel warm-instance persistence.
+Stores submissions via GitHub repo (persistent across Vercel deploys).
 GET  → list all submissions
 POST → store new submission (called from index.html form)
 """
-import os
 import json
-import shelve
 from http.server import BaseHTTPRequestHandler
-
-DB_PATH = "/tmp/submissions_db"
+from api.github_db import read_submissions, append_submission
 
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            submissions = _read_all()
+            submissions = read_submissions()
             self._respond(200, {
                 "total": len(submissions),
                 "submissions": submissions,
@@ -46,8 +43,11 @@ class handler(BaseHTTPRequestHandler):
             "birthplace": (data.get("birthplace") or "").strip(),
             "date": _now_iso(),
         }
-        _append(entry)
-        self._respond(200, {"ok": True})
+        success = append_submission(entry)
+        if success:
+            self._respond(200, {"ok": True})
+        else:
+            self._respond(500, {"error": "Failed to save submission"})
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -65,29 +65,6 @@ class handler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
         self.wfile.write(body)
-
-
-def _read_all():
-    """Read all submissions."""
-    try:
-        with shelve.open(DB_PATH, flag="r") as db:
-            return db.get("submissions", [])
-    except Exception:
-        return []
-
-
-def _append(entry):
-    """Append a submission."""
-    submissions = _read_all()
-    submissions.append(entry)
-    # Keep only last 200 entries
-    if len(submissions) > 200:
-        submissions = submissions[-200:]
-    try:
-        with shelve.open(DB_PATH, flag="c") as db:
-            db["submissions"] = submissions
-    except Exception:
-        pass
 
 
 def _now_iso():

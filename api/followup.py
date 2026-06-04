@@ -7,40 +7,15 @@ GET /api/followup?key=DESTINY_CRON_KEY → process all pending follow-ups
 """
 import os
 import json
-import shelve
+import urllib.parse
 import requests
 from http.server import BaseHTTPRequestHandler
 from datetime import datetime, timezone, timedelta
+from api.github_db import read_submissions, read_followups, save_followups
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 FROM_EMAIL = os.environ.get("FROM_EMAIL", "Destiny Code <onboarding@resend.dev>")
 CRON_KEY = os.environ.get("DESTINY_CRON_KEY", "cron-secret-2026")
-FOLLOWUP_DB = "/tmp/followup_db"
-SUBMISSIONS_DB = "/tmp/submissions_db"
-
-
-def _read_all(db_path):
-    try:
-        with shelve.open(db_path, flag="r") as db:
-            return db.get("submissions", [])
-    except Exception:
-        return []
-
-
-def _read_followups():
-    try:
-        with shelve.open(FOLLOWUP_DB, flag="r") as db:
-            return db.get("sent", {})
-    except Exception:
-        return {}
-
-
-def _save_followups(data):
-    try:
-        with shelve.open(FOLLOWUP_DB, flag="c") as db:
-            db["sent"] = data
-    except Exception:
-        pass
 
 
 def _now():
@@ -177,8 +152,8 @@ class handler(BaseHTTPRequestHandler):
             return
 
         now = _now()
-        submissions = _read_all(SUBMISSIONS_DB)
-        sent = _read_followups()
+        submissions = read_submissions()
+        sent = read_followups()
         results = {"processed": 0, "sent_24h": 0, "sent_72h": 0, "skipped": 0}
 
         for i, sub in enumerate(submissions):
@@ -216,21 +191,18 @@ class handler(BaseHTTPRequestHandler):
             except Exception:
                 pass
 
-            import urllib.parse
             name_enc = urllib.parse.quote(user_name)
 
-            # Compute basic day master info for email personalization
-            # Use a simple mapping based on birth year stem
+            # Simple day master mapping
             day_master_map = {
                 0: "Jia", 1: "Yi", 2: "Bing", 3: "Ding",
                 4: "Wu", 5: "Ji", 6: "Geng", 7: "Xin",
                 8: "Ren", 9: "Gui"
             }
-            # Simplified day master from the full algorithm
             dm_idx = ((year - 1900) * 365 + (month - 1) * 30 + day) % 10
             day_master = day_master_map.get(dm_idx, "Unknown")
             accent_color = "#c9a96e"
-            dominant = "Fire"  # Simplified
+            dominant = "Fire"
             growth_edge = "Understanding your energy patterns is the first step toward growth."
 
             # ── 24h Follow-Up ──
@@ -269,7 +241,7 @@ class handler(BaseHTTPRequestHandler):
             if "24h" in sent_status or "72h" in sent_status:
                 results["skipped"] += 1
 
-        _save_followups(sent)
+        save_followups(sent)
         self._respond(200, results)
 
     def _respond(self, status_code, data):
