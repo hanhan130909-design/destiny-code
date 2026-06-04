@@ -452,8 +452,8 @@
 </div>
 
 <script>
-  const API_URL = 'https://metaphysics-landing.vercel.app/api/preview';
-  const FORMSPREE_URL = 'https://formspree.io/f/mwvzzdgd';
+  const API_URL = '/api/preview';
+  const ADMIN_URL = '/api/admin';
   const form = document.getElementById('blueprintForm');
   const formSection = document.getElementById('formSection');
   const submitBtn = form.querySelector('[data-fs-submit-btn]');
@@ -474,7 +474,7 @@
     submitBtn.textContent = 'Generating your blueprint...';
     submitBtn.disabled = true;
 
-    // Call our preview API
+    // Call preview API (BaZi calc + Resend email)
     fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -490,8 +490,8 @@
       submitBtn.disabled = false;
     });
 
-    // Also submit to Formspree for backup
-    fetch(FORMSPREE_URL, {
+    // Store submission for admin dashboard
+    fetch(ADMIN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
