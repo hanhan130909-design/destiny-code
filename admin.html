@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard — Destiny Code</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --bg: #0a0c14;
+    --surface: #111520;
+    --border: #1e2433;
+    --text: #c8ccd6;
+    --text-dim: #6b7280;
+    --gold: #c9a96e;
+    --gold-dim: #8b7348;
+    --accent: #5b7f95;
+    --error: #e0556a;
+    --success: #5a9e6f;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(90,110,140,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Password Gate ── */
+  #gate {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    transition: opacity 0.4s, visibility 0.4s;
+  }
+  #gate.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .gate-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
+  .gate-card .icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+  .gate-card h1 {
+    font-size: 22px;
+    color: #e8ecf1;
+    margin-bottom: 8px;
+  }
+  .gate-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+  .gate-card input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .gate-card input:focus {
+    border-color: var(--gold-dim);
+  }
+  .gate-card .btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .gate-card .btn:hover {
+    background: #d4b87a;
+  }
+  .gate-card .error-msg {
+    color: var(--error);
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 20px;
+  }
+
+  /* ── Dashboard ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header h1 {
+    font-size: 24px;
+    color: #e8ecf1;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header h1 .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+  .header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .header-actions a,
+  .header-actions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .header-actions a:hover,
+  .header-actions button:hover {
+    border-color: var(--gold-dim);
+  }
+  .header-actions .refresh-btn {
+    border-color: var(--gold-dim);
+    color: var(--gold);
+  }
+
+  /* ── Stat Cards ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+  .stat-card .stat-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  /* ── Table ── */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .table-card h2 {
+    font-size: 15px;
+    color: #d8dce3;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-dim);
+    background: rgba(0,0,0,0.2);
+  }
+  td {
+    color: var(--text);
+  }
+  td.email {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+  td.name {
+    font-weight: 500;
+    color: #d8dce3;
+  }
+  tr:hover td {
+    background: rgba(201,169,110,0.03);
+  }
+  .no-data {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-dim);
+  }
+  .no-data .icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  /* ── Loading & Error ── */
+  .loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-dim);
+  }
+  .loading-state .spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .error-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--error);
+    background: rgba(224,85,106,0.05);
+    border: 1px solid rgba(224,85,106,0.2);
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .error-state .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: #3a3f4a;
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      padding: 24px 16px 40px;
+    }
+    .header h1 {
+      font-size: 20px;
+    }
+    .stat-card .stat-value {
+      font-size: 28px;
+    }
+    th, td {
+      padding: 10px 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Password Gate ── -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="icon">🔐</div>
+    <h1>Admin Dashboard</h1>
+    <p>Enter the access key to view submissions.</p>
+    <input type="password" id="passwordInput" placeholder="Access key" autofocus>
+    <button class="btn" onclick="unlock()">Unlock</button>
+    <div class="error-msg" id="gateError"></div>
+  </div>
+</div>
+
+<!-- ── Dashboard Content ── -->
+<div class="container" id="dashboard" style="display:none">
+
+  <div class="header">
+    <h1><span class="dot"></span> Submissions Dashboard</h1>
+    <div class="header-actions">
+      <button class="refresh-btn" onclick="loadSubmissions()" id="refreshBtn">↻ Refresh</button>
+      <a href="https://analytics.google.com/analytics/web/#/p463950202/reports/reportinghub" target="_blank" rel="noopener">
+        📊 GA4 Dashboard
+      </a>
+      <a href="https://analytics.google.com/analytics/web/#/p463950202/reports/intelligenthome" target="_blank" rel="noopener">
+        📈 Realtime
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats" id="stats">
+    <div class="stat-card">
+      <div class="stat-value" id="statTotal">—</div>
+      <div class="stat-label">Total Submissions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statRecent">—</div>
+      <div class="stat-label">Last 7 Days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statToday">—</div>
+      <div class="stat-label">Today</div>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-state" id="errorBox" style="display:none">
+    <div class="icon">⚠</div>
+    <div id="errorMsg"></div>
+  </div>
+
+  <!-- Submissions Table -->
+  <div class="table-card">
+    <h2>📋 Recent Submissions</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Birth Date</th>
+            <th>Birth Time</th>
+            <th>Birth Place</th>
+          </tr>
+        </thead>
+        <tbody id="submissionsBody">
+        </tbody>
+      </table>
+    </div>
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Loading submissions…</p>
+    </div>
+    <div class="no-data" id="noData" style="display:none">
+      <div class="icon">📭</div>
+      <p>No submissions yet.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Destiny Code Admin · <span id="lastUpdated"></span> · 
+    GA Property: G-63MWNPN7FV
+  </div>
+
+</div>
+
+<script>
+// ── Password Gate ──
+const ADMIN_PASSWORD = 'destiny2026';
+
+function unlock() {
+  const input = document.getElementById('passwordInput');
+  const error = document.getElementById('gateError');
+  const gate = document.getElementById('gate');
+  const dashboard = document.getElementById('dashboard');
+
+  if (input.value === ADMIN_PASSWORD) {
+    gate.classList.add('hidden');
+    dashboard.style.display = 'block';
+    loadSubmissions();
+  } else {
+    error.textContent = 'Incorrect access key. Try again.';
+    input.value = '';
+    input.focus();
+  }
+}
+
+// Allow Enter key to submit
+document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') unlock();
+});
+
+// ── Data Loading ──
+const API_URL = '/api/admin';
+const FORMSPREE_DIRECT_URL = 'https://formspree.io/api/0/forms/mwvzzdgd/submissions';
+
+async function loadSubmissions() {
+  const loadingState = document.getElementById('loadingState');
+  const noData = document.getElementById('noData');
+  const errorBox = document.getElementById('errorBox');
+  const tbody = document.getElementById('submissionsBody');
+  const refreshBtn = document.getElementById('refreshBtn');
+
+  loadingState.style.display = 'block';
+  noData.style.display = 'none';
+  errorBox.style.display = 'none';
+  tbody.innerHTML = '';
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = '⟳ Loading…';
+
+  try {
+    const resp = await fetch(API_URL);
+    if (!resp.ok) {
+      throw new Error(`API returned ${resp.status}: ${resp.statusText}`);
+    }
+    const data = await resp.json();
+
+    if (data.error) {
+      throw new Error(data.error);
+    }
+
+    renderDashboard(data);
+    document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date().toLocaleString();
+  } catch (err) {
+    console.error('Failed to load submissions:', err);
+    errorBox.style.display = 'block';
+    document.getElementById('errorMsg').textContent = 'Failed to load submissions: ' + err.message;
+  } finally {
+    loadingState.style.display = 'none';
+    refreshBtn.disabled = false;
+    refreshBtn.textContent = '↻ Refresh';
+  }
+}
+
+function renderDashboard(data) {
+  const submissions = data.submissions || [];
+  const total = submissions.length;
+
+  // Calculate stats
+  const now = new Date();
+  const sevenDaysAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  let recentCount = 0;
+  let todayCount = 0;
+
+  submissions.forEach(sub => {
+    const date = new Date(sub.date);
+    if (date >= sevenDaysAgo) recentCount++;
+    if (date >= todayStart) todayCount++;
+  });
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statRecent').textContent = recentCount;
+  document.getElementById('statToday').textContent = todayCount;
+
+  // Render table
+  const tbody = document.getElementById('submissionsBody');
+  const noData = document.getElementById('noData');
+
+  if (submissions.length === 0) {
+    noData.style.display = 'block';
+    return;
+  }
+
+  noData.style.display = 'none';
+
+  // Show most recent first (API usually returns newest first, but sort just in case)
+  const sorted = [...submissions].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  sorted.forEach(sub => {
+    const date = sub.date ? new Date(sub.date).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    }) : '—';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${date}</td>
+      <td class="name">${escapeHtml(sub.name || '—')}</td>
+      <td class="email">${escapeHtml(sub.email || '—')}</td>
+      <td>${escapeHtml(sub.birthdate || '—')}</td>
+      <td>${escapeHtml(sub.birthtime || '—')}</td>
+      <td>${escapeHtml(sub.birthplace || '—')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+
+</body>
+</html>

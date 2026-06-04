@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "project": "Destiny Code / Metaphysics Landing",
+    "calendar_name": "Week 1 Social Media Publishing Schedule",
+    "generated": "2026-06-04",
+    "timezone_note": "All times listed in both EST (UTC-5) and UTC. EST is used for planning; UTC is the canonical time.",
+    "accounts": {
+      "reddit": "u/DestinyCode",
+      "twitter": "@DestinyCodeHQ",
+      "tiktok": "@DestinyCodeHQ"
+    },
+    "landing_page": "https://destinycode.me"
+  },
+  "schedule": [
+    {
+      "day": 1,
+      "label": "Monday",
+      "platform": "Reddit",
+      "subreddit": "r/astrology",
+      "flair": "Discussion | Astrology",
+      "best_time_utc": "14:00",
+      "best_time_est": "09:00",
+      "content_type": "discussion_post",
+      "title": "Anyone else explored BaZi (Chinese Four Pillars) alongside Western astrology? It changed how I see birth charts completely.",
+      "body": "I've been into Western astrology for years — natal charts, transits, the whole thing. Recently I fell down the BaZi (Four Pillars of Destiny) rabbit hole and honestly... it's wild how much more granular it gets.\n\nThe biggest difference: Western astrology gives you a Sun sign (1 position). BaZi reads 8 \"characters\" from your birth YEAR, MONTH, DAY, and HOUR. Each is an element + polarity combination, so the total unique combos are over a million vs 12 zodiac signs.\n\nThe concept that got me: your \"Day Master\" — the character from your birth DAY. It's like your TRUE core self. Way more specific than a Sun sign. I found out I'm a Yin Fire Day Master and suddenly SO many patterns in my life made sense (especially around burnout — Fire types literally have rest cycle needs built into our charts).\n\nWhat I found most interesting:\n- The Day Pillar contains your 'Day Master' — this is your true self, similar to the Sun sign but more specific\n- The system includes 10-year 'Luck Pillars' that show how your energy shifts across your lifetime\n- Compatibility isn't just 'are you a Leo dating a Scorpio' — it compares the full 8-character sets per person\n\nI'm not saying one is better than the other. They complement each other well. Western astrology is a photograph of the sky. BaZi is a timeline of your personal energy.\n\nHas anyone else here cross-referenced both systems? I'd love to hear your experiences.",
+      "posting_rules": [
+        "DO NOT include the landing page link in the post body (instant ban risk on r/astrology)",
+        "If someone asks 'where can I learn more?', reply: 'I've been using a free Element Snapshot tool — I have it linked in my profile. Happy to share more if you're curious!'",
+        "Your Reddit profile bio should contain the landing page link",
+        "Engage with every comment for at least the first 2 hours",
+        "Do NOT mention 'Destiny Code' or any product name — this is a pure discussion post"
+      ],
+      "source_file": "reddit-week1-ready/post1-astrology.md"
+    },
+    {
+      "day": 2,
+      "label": "Tuesday",
+      "platform": "Reddit",
+      "subreddit": "r/spirituality",
+      "flair": "Discussion | Self-Discovery",
+      "best_time_utc": "14:00",
+      "best_time_est": "09:00",
+      "content_type": "discussion_post",
+      "title": "Does anyone else feel like they were born with a restless, \"don't quite fit\" energy? I found an explanation that resonated.",
+      "body": "I've spent most of my life feeling like an outsider. Not in a sad way necessarily — more like I'm watching life from a slight distance. Always searching for something I couldn't name. People have called me an \"old soul\" since I was a kid.\n\nRecently I came across a concept from BaZi (Chinese Four Pillars metaphysics) called \"wandering star\" energy. It's a specific configuration in your birth chart that apparently creates exactly this feeling — restlessness, a sense of not belonging, a drive to walk an unconventional path.\n\nWhat hit me: this isn't a flaw. In the framework, it's actually a SIGNAL. The chart says: you're not supposed to fit into conventional structures. Your difference is the point. Your job is to carve your own path.\n\nReading that literally made me tear up. For the first time, \"different\" felt like a feature, not a bug.\n\nSome things the system maps:\n- Your dominant element (Wood, Fire, Earth, Metal, Water) and what it means for how you operate\n- Your 10-year life chapters (some are for building, some for resting, some for letting go)\n- Your relationship patterns (not 'who to date' but 'what dynamics you naturally create')\n\nThe biggest relief was realizing: I'm not broken. I have a specific energy configuration. Understanding that configuration is half the work.\n\nI'm curious — does anyone else resonate with this \"wandering\" energy? How do you work WITH it rather than against it? Would love to hear others' experiences with feeling \"different\" and how spirituality helped you frame it.",
+      "posting_rules": [
+        "DO NOT include the landing page link in the post body",
+        "r/spirituality is less strict than r/astrology but still bans obvious self-promotion",
+        "If someone asks 'where can I learn more?', reply: 'I found a free Element Snapshot tool that's been really helpful — it's linked in my profile bio. The Day Master concept alone was worth it.'",
+        "Keep the conversation personal and emotionally honest — no 'sales' language"
+      ],
+      "source_file": "reddit-week1-ready/post2-spirituality.md"
+    },
+    {
+      "day": 3,
+      "label": "Wednesday",
+      "platform": "Reddit",
+      "subreddit": "r/selfimprovement",
+      "flair": "Tips & Techniques",
+      "best_time_utc": "15:00",
+      "best_time_est": "10:00",
+      "content_type": "discussion_post",
+      "title": "I discovered a personality system based on birth data (not a quiz) — it's been more accurate than MBTI for me",
+      "body": "I'm a personality framework nerd. I've done MBTI, Enneagram, Big Five, StrengthsFinder — you name it. They're all useful but they share one limitation: they rely on self-reported answers. You answer questions about who you THINK you are.\n\nRecently I stumbled on something different: the Five Elements framework from Chinese BaZi. Instead of a questionnaire, your element type is calculated from your birth date and time.\n\nThe five types:\n- Wood: Visionary. Growth-oriented, always expanding. Natural leaders. Challenge: impatience.\n- Fire: Charismatic. High energy, people are drawn to you. Challenge: burnout.\n- Earth: Stabilizer. Reliable, nurturing, builds lasting things. Challenge: over-giving.\n- Metal: Precision. Sharp analytical mind, strong principles. Challenge: rigidity.\n- Water: Intuitive. Deep thinking, natural wisdom. Challenge: absorbing others' emotions.\n\nI came out as a dominant Fire with secondary Wood. This explained so much: why I'm great at starting projects (Fire initiation) but struggle to finish them (Wood keeps wanting to grow into NEW things). Also why I burn out in cycles — Fire needs rest between intensity.\n\nWhat I've found practical about this:\n1. It's based on your actual birth configuration, not self-perception\n2. It maps to life timing — you're in different 'element seasons' at different ages\n3. It predicts where your energy will naturally excel and struggle\n\nIf you're into personality frameworks, this one's worth exploring. It sits somewhere between MBTI (personality) and Human Design (birth chart based) but predates both by millennia.\n\nAnyone else explored this intersection? Curious if your element type aligns with your MBTI stack.",
+      "posting_rules": [
+        "DO NOT include the landing page link in the post body",
+        "Frame everything as a 'personality framework' not 'astrology' — r/selfimprovement is practical",
+        "If someone asks, direct to profile bio for the tool link",
+        "This audience responds to 'actionable,' 'framework,' 'data' language — not 'spiritual,' 'cosmic,' 'destiny'"
+      ],
+      "source_file": "reddit-week1-ready/post3-selfimprovement.md"
+    },
+    {
+      "day": 4,
+      "label": "Thursday",
+      "platform": "Twitter/X",
+      "account": "@DestinyCodeHQ",
+      "best_time_utc": "15:00",
+      "best_time_est": "10:00",
+      "content_type": "thread",
+      "topic": "Zodiac is only 12.5% / Day Master",
+      "tweets": [
+        {
+          "position": "main",
+          "text": "Your Sun sign is only 12.5% of who you are.\n\nWestern astrology reads ONE position. Eastern BaZi reads EIGHT characters — from your birth year, month, day, and HOUR.\n\nThat's 1,000,000+ unique combinations vs 12 zodiac signs.\n\nYour Day Master = your TRUE self. Way more specific than any zodiac. 🧵👇",
+          "media": "Four-pillar diagram image (Canva)"
+        },
+        {
+          "position": "reply_1",
+          "text": "Your \"Day Master\" comes from your birth DAY — not your year, not your month, just your day.\n\nIt reveals:\n• Your core personality\n• Your natural strengths\n• Your deepest challenges\n\nAll calculated from birth data. No quiz. No self-reporting bias."
+        },
+        {
+          "position": "reply_2",
+          "text": "Example: Two \"Year of the Dragon\" people. One is a Water type. The other is a Fire type.\n\nCompletely different energy blueprints.\n\nThe animal sign is just the headline. Not the story.\n\nCurious what YOUR Day Master is?\nFree Element Snapshot → destinycode.me"
+        }
+      ],
+      "hashtags": ["#BaZi", "#ChineseZodiac", "#Astrology", "#SelfDiscovery"],
+      "posting_rules": [
+        "Post main tweet, then reply with thread tweets immediately",
+        "Use media on main tweet: four-pillar diagram",
+        "Engage with replies for the first 2 hours after posting",
+        "Bio link: https://destinycode.me",
+        "No hard sell — value-first, curiosity-driven"
+      ],
+      "source_file": "content/twitter-week1.md"
+    },
+    {
+      "day": 5,
+      "label": "Friday",
+      "platform": "Twitter/X",
+      "account": "@DestinyCodeHQ",
+      "best_time_utc": "17:00",
+      "best_time_est": "12:00",
+      "content_type": "thread",
+      "topic": "The 5 Elements Personality Types",
+      "tweets": [
+        {
+          "position": "main",
+          "text": "Not 12 zodiac signs. Not 16 MBTI types.\n\nIn Eastern energy science, everything comes back to FIVE elemental forces:\n\n🌿 WOOD — The Visionary\n🔥 FIRE — The Charismatic\n⛰️ EARTH — The Stabilizer\n⚔️ METAL — The Perfectionist\n🌊 WATER — The Intuitive\n\nWhich one sounds like you?",
+          "media": "Five-element graphic (colored circles: 🌿🔥⛰️⚔️🌊)"
+        },
+        {
+          "position": "reply_1",
+          "text": "Most people are a blend of 2-3 elements — but ONE dominates your chart.\n\nYour dominant element shapes your decisions, relationships, career — everything.\n\nMine? Fire with secondary Wood. Explains why I start strong and chase the next thing before finishing.\n\nFind your element: destinycode.me"
+        }
+      ],
+      "hashtags": ["#FiveElements", "#PersonalityTypes", "#BaZi", "#SelfDiscovery"],
+      "posting_rules": [
+        "Post main tweet, then reply with thread tweet immediately",
+        "Use media on main tweet: five-element colored circles graphic",
+        "Engage with replies for the first 2 hours after posting",
+        "Bio link: https://destinycode.me",
+        "No hard sell — value-first, curiosity-driven"
+      ],
+      "source_file": "content/twitter-week1.md"
+    },
+    {
+      "day": 6,
+      "label": "Saturday",
+      "platform": "TikTok",
+      "account": "@DestinyCodeHQ",
+      "best_time_utc": "13:00",
+      "best_time_est": "08:00",
+      "content_type": "video_script_caption",
+      "video_title": "Your Birth Year Is NOT Your Chinese Zodiac",
+      "video_type": "Educational / Myth Buster",
+      "duration_seconds": 45,
+      "caption": "You've been reading your Chinese zodiac wrong your entire life. 😳\n\nIf you think you're \"a Dragon\" because you were born in 2000, you're only seeing 1/8th of the picture.\n\nAncient BaZi actually reads FOUR pillars — your Year, Month, Day, and HOUR of birth. That's 1,000,000+ unique combinations, not just 12 animals.\n\nYour Day Master (from your birth DAY) is your TRUE self. It's way more specific than any animal sign.\n\nSame birth year? Completely different energy blueprint. 🤯\n\nWhat's YOUR Day Master?\n👇 Free Element Snapshot at the link in bio\nmetaphysics-landing.vercel.app\n\n✧",
+      "hashtags": "#bazi #chinesezodiac #astrology #spirituality #birthchart #zodiacsigns #spiritualtiktok #manifestation #easternastrology #daymaster #fourpillarsofdestiny #selfdiscovery #personality #spiritualawakening #fyp #viral #learnontiktok #ancientwisdom #metaphysics #energyblueprint",
+      "posting_rules": [
+        "Post natively on TikTok with auto-captions enabled",
+        "Use lo-fi ambient beat / 432Hz background music",
+        "Add ☯ Destiny Code logo as 2-second outro",
+        "Link in bio: metaphysics-landing.vercel.app"
+      ],
+      "source_file": "tiktok-week1-drafts/script1-birth-year-zodiac.md"
+    },
+    {
+      "day": 7,
+      "label": "Sunday",
+      "platform": "TikTok",
+      "account": "@DestinyCodeHQ",
+      "best_time_utc": "18:00",
+      "best_time_est": "13:00",
+      "content_type": "video_script_caption",
+      "video_title": "The Five Elements Explained in 50 Seconds",
+      "video_type": "Educational / Personality Framework",
+      "duration_seconds": 50,
+      "caption": "There are only 5 personality types in the world. Which one are you? 🌿🔥⛰️⚔️🌊\n\nIn Eastern energy science, everything comes back to FIVE elemental forces:\n\n🌿 WOOD = The Visionary. Always growing, natural leader.\n🔥 FIRE = The Charismatic. Lights up every room.\n⛰️ EARTH = The Stabilizer. The one everyone leans on.\n⚔️ METAL = The Perfectionist. Sharp mind, strong values.\n🌊 WATER = The Intuitive. You just KNOW things.\n\nMost people are a blend of 2-3 elements — but one DOMINATES your chart.\n\nWhich element do YOU think you are? Comment below 👇\n\nFind your true element → Free Element Snapshot at the link in bio\nmetaphysics-landing.vercel.app\n\n✧",
+      "hashtags": "#fiveelements #bazi #personalitytypes #spirituality #astrology #easternphilosophy #selfdiscovery #chinesezodiac #manifestation #woodfireearthmetalwater #spiritualtiktok #personalitytest #energyblueprint #witchtok #learnontiktok #fyp #viralknowledge #ancientwisdom #metaphysics #soulpurpose",
+      "posting_rules": [
+        "Post natively on TikTok with auto-captions enabled",
+        "Use clean, modern ambient / cinematic ambient background music",
+        "Add ☯ Destiny Code logo as 2-second outro",
+        "Link in bio: metaphysics-landing.vercel.app"
+      ],
+      "source_file": "tiktok-week1-drafts/script2-five-elements.md"
+    }
+  ],
+  "summary": {
+    "total_days": 7,
+    "platforms": ["Reddit (days 1-3)", "Twitter/X (days 4-5)", "TikTok (days 6-7)"],
+    "reddit_posts": 3,
+    "twitter_threads": 2,
+    "tiktok_scripts": 2,
+    "total_content_pieces": 7
+  }
+}
