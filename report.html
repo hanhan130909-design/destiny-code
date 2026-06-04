@@ -65,6 +65,31 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .fade-in{animation:fadeIn 0.5s ease}
   @media(max-width:600px){.pillars{grid-template-columns:1fr 1fr}.hero .dm{font-size:36px}}
+  /* ── Print Stylesheet ── */
+  @media print {
+    body{background:#fff;color:#000;font-size:12pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    body::before{display:none}
+    .container{max-width:100%;padding:0;margin:0}
+    nav,.cta,.blur-overlay,.lock-badge,.download-btn-container,#stripe-cta{display:none!important}
+    .blur-section p{filter:none!important;user-select:auto!important}
+    .card{background:#fff;border:1px solid #ccc;border-radius:0;padding:12pt 0;margin-bottom:8pt;page-break-inside:avoid}
+    .card h2{color:#222;font-size:14pt}
+    .card p,.card li{color:#333;font-size:11pt}
+    .hero h1{color:#111;font-size:20pt}
+    .hero .dm{color:#000;font-size:36pt}
+    .hero .sub{color:#555}
+    .pillar{background:#fff;border:1px solid #ccc}
+    .pillar .ganzhi{color:#111}
+    .el{background:#fff;border:1px solid #ccc}
+    .el .count{color:#000!important}
+    .el.dominant{border-color:#000}
+    .el.dominant .count{color:#000!important}
+    @page{margin:1.5cm}
+  }
+  /* ── Download Button ── */
+  .download-btn-container{text-align:center;margin-top:20px;margin-bottom:10px}
+  .download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--bg);padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;border:none;cursor:pointer}
+  .download-btn:hover{opacity:0.9}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-63MWNPN7FV"></script>
@@ -290,6 +315,12 @@ function renderFull(d) {
     <div class="card fade-in" style="border-color:rgba(201,169,110,0.2);background:rgba(201,169,110,0.05);text-align:center">
       <p style="color:var(--gold);font-size:13px">✦ Thank you for investing in your self-knowledge ✦</p>
     </div>
+
+    <div class="download-btn-container fade-in">
+      <button class="download-btn" onclick="downloadPDF()">
+        <span style="font-size:16px">📄</span> Download PDF
+      </button>
+    </div>
   `;
 }
 
@@ -307,6 +338,12 @@ async function startCheckout() {
   // PayPal redirect with return URL
   const returnUrl = encodeURIComponent('https://metaphysics-landing.vercel.app/report');
   window.location.href = `${CHECKOUT_LINK}&return=${returnUrl}&cancel_return=${returnUrl}`;
+}
+
+function downloadPDF() {
+  // Use window.print() to open the native print dialog (Save as PDF)
+  // The @media print stylesheet strips UI, buttons, nav, paywall
+  window.print();
 }
 
 function esc(s) { return String(s).replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]); }

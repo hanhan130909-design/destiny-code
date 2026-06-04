@@ -24,6 +24,8 @@
     --bg: #0a0c14; --surface: #111520; --border: #1e2433;
     --text: #c8ccd6; --text-dim: #6b7280; --gold: #c9a96e;
     --gold-dim: #8b7348; --accent: #5b7f95;
+    --wood: #7a9e5a; --fire: #d4685a; --earth: #c9a96e;
+    --metal: #b0b8c8; --water: #5b7f95;
   }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -32,35 +34,213 @@
   }
   body::before {
     content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(90,110,140,0.08) 0%, transparent 70%);
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(90,110,140,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse at 80% 20%, rgba(201,169,110,0.04) 0%, transparent 50%);
     pointer-events: none; z-index: 0;
   }
-  .container { max-width: 720px; margin: 0 auto; padding: 60px 24px; position: relative; z-index: 1; }
-  nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 60px 24px; position: relative; z-index: 1; }
+  nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 56px; }
   nav a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: color .2s; }
   nav a:hover { color: var(--gold); }
   .logo { font-size: 18px; color: var(--text); font-weight: 600; }
   .logo span { color: var(--gold); }
-  h1 { font-size: 32px; font-weight: 600; color: #e8ecf1; margin-bottom: 8px; letter-spacing: -0.3px; }
-  .subtitle { color: var(--text-dim); font-size: 15px; margin-bottom: 48px; }
-  .post-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-    padding: 28px; margin-bottom: 20px; transition: border-color .2s;
+
+  /* Header */
+  .blog-header { margin-bottom: 48px; }
+  .blog-header h1 { font-size: 36px; font-weight: 600; color: #e8ecf1; margin-bottom: 12px; letter-spacing: -0.5px; }
+  .blog-header .subtitle { color: var(--text-dim); font-size: 16px; max-width: 600px; line-height: 1.6; }
+  .blog-header .stats { display: flex; gap: 24px; margin-top: 16px; }
+  .blog-header .stat { font-size: 13px; color: var(--text-dim); }
+  .blog-header .stat strong { color: var(--gold); font-size: 18px; }
+
+  /* Grid layout */
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
   }
-  .post-card:hover { border-color: var(--gold-dim); }
-  .post-card h2 { font-size: 18px; font-weight: 600; color: #d8dce3; margin-bottom: 8px; }
+
+  /* Featured card */
+  .post-card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    border-color: var(--gold-dim);
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(201,169,110,0.05) 100%);
+  }
+  .post-card.featured .card-content { padding: 8px 0; }
+  .post-card.featured h2 { font-size: 22px; }
+  .post-card.featured .excerpt { font-size: 15px; }
+  .featured-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    color: var(--bg);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .featured-icon {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    min-height: 200px;
+  }
+
+  /* Standard cards */
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: all .25s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .post-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  .post-card:hover {
+    border-color: var(--gold-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .post-card:hover::before {
+    opacity: 1;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+
+  /* Card icon */
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(201,169,110,0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(201,169,110,0.12);
+  }
+
+  .post-card h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #d8dce3;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    flex-grow: 0;
+  }
   .post-card h2 a { color: inherit; text-decoration: none; }
   .post-card h2 a:hover { color: var(--gold); }
-  .post-card .meta { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; }
-  .post-card .excerpt { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
-  .tag {
-    display: inline-block; background: rgba(201,169,110,0.1); color: var(--gold);
-    font-size: 11px; padding: 2px 10px; border-radius: 20px; margin-right: 6px;
+
+  .post-card .meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  footer { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .meta .read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,0.03);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+  }
+
+  .post-card .excerpt {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  /* Tags area */
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(201,169,110,0.08);
+    color: var(--gold-dim);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(201,169,110,0.1);
+    transition: all .2s;
+  }
+  .tag:hover {
+    background: rgba(201,169,110,0.15);
+    color: var(--gold);
+    border-color: rgba(201,169,110,0.25);
+  }
+  .tag.element-wood { color: var(--wood); background: rgba(122,158,90,0.08); border-color: rgba(122,158,90,0.15); }
+  .tag.element-fire { color: var(--fire); background: rgba(212,104,90,0.08); border-color: rgba(212,104,90,0.15); }
+  .tag.element-earth { color: var(--earth); background: rgba(201,169,110,0.08); border-color: rgba(201,169,110,0.15); }
+  .tag.element-metal { color: var(--metal); background: rgba(176,184,200,0.08); border-color: rgba(176,184,200,0.15); }
+  .tag.element-water { color: var(--water); background: rgba(91,127,149,0.08); border-color: rgba(91,127,149,0.15); }
+
+  /* Newsletter CTA */
+  .newsletter-cta {
+    margin-top: 56px;
+    background: linear-gradient(135deg, rgba(201,169,110,0.06), rgba(201,169,110,0.02));
+    border: 1px solid var(--gold-dim);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+  }
+  .newsletter-cta h3 { color: var(--gold); font-size: 18px; margin-bottom: 8px; }
+  .newsletter-cta p { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+  .newsletter-cta a {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--bg);
+    padding: 12px 32px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity .2s;
+  }
+  .newsletter-cta a:hover { opacity: .85; }
+
+  footer { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
   footer p { font-size: 13px; color: var(--text-dim); }
   footer a { color: var(--gold); text-decoration: none; }
-  @media(max-width:600px){ .container { padding: 40px 20px; } h1 { font-size: 26px; } }
+
+  @media(max-width:768px) {
+    .post-grid { grid-template-columns: 1fr; }
+    .post-card.featured { grid-template-columns: 1fr; gap: 20px; }
+    .featured-icon { display: none; }
+    .blog-header h1 { font-size: 28px; }
+  }
+  @media(max-width:600px) {
+    .container { padding: 40px 20px; }
+    .blog-header h1 { font-size: 24px; }
+    .post-card { padding: 22px; }
+  }
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-63MWNPN7FV"></script>
@@ -78,63 +258,115 @@
     <a href="/">← Home</a>
   </nav>
 
-  <h1>Energy Blueprint Blog</h1>
-  <p class="subtitle">Ancient wisdom, decoded for the modern seeker. Explore BaZi, Five Elements, and the art of self-discovery.</p>
-
-  <div class="post-card">
-    <div><span class="tag">BaZi</span><span class="tag">Astrology</span></div>
-    <h2><a href="/blog/baZi-vs-western-astrology">BaZi vs Western Astrology: What's the Difference and Why It Matters</a></h2>
-    <p class="meta">June 1, 2026 · 5 min read</p>
-    <p class="excerpt">Western astrology gives you one Sun sign. BaZi reads eight "characters" from your birth year, month, day, and hour — over a million unique combinations. Here's how they compare, and what your Day Master reveals about you.</p>
+  <div class="blog-header">
+    <h1>Energy Blueprint Blog</h1>
+    <p class="subtitle">Ancient wisdom, decoded for the modern seeker. Explore BaZi, Five Elements, and the art of self-discovery.</p>
+    <div class="stats">
+      <div class="stat"><strong>8</strong> articles</div>
+      <div class="stat"><strong>5</strong> topics</div>
+      <div class="stat">Updated <strong>June 2026</strong></div>
+    </div>
   </div>
 
-  <div class="post-card">
-    <div><span class="tag">Self-Discovery</span><span class="tag">Energy</span></div>
-    <h2><a href="/blog/wandering-star-energy">The "Wandering Star" Energy: Why Some People Never Feel Like They Fit In</a></h2>
-    <p class="meta">June 1, 2026 · 4 min read</p>
-    <p class="excerpt">If you've spent your life feeling like an outsider — restless, searching, slightly out of sync — BaZi has a name for it. Understanding "wandering star" energy reframes difference as a feature, not a bug.</p>
+  <div class="post-grid">
+
+    <!-- FEATURED: BaZi vs Western Astrology -->
+    <div class="post-card featured">
+      <div class="card-content">
+        <span class="featured-badge">★ Most Popular</span>
+        <div class="tags-row">
+          <span class="tag">BaZi</span><span class="tag">Astrology</span><span class="tag">Comparison</span>
+        </div>
+        <h2><a href="/blog/baZi-vs-western-astrology">BaZi vs Western Astrology: What's the Difference and Why It Matters</a></h2>
+        <p class="meta">June 1, 2026 <span class="read-time">⏱ 5 min read</span></p>
+        <p class="excerpt">Western astrology gives you one Sun sign. BaZi reads eight "characters" from your birth year, month, day, and hour — over a million unique combinations. Here's how they compare, and what your Day Master reveals about you. Plus: the 10 Day Master types and how Five Elements balance shapes your life.</p>
+      </div>
+      <div class="featured-icon">👤🔮</div>
+    </div>
+
+    <!-- Card 2: Wandering Star -->
+    <div class="post-card">
+      <div class="card-icon">✨</div>
+      <div class="tags-row">
+        <span class="tag">Self-Discovery</span><span class="tag">Energy</span><span class="tag">BaZi</span>
+      </div>
+      <h2><a href="/blog/wandering-star-energy">The "Wandering Star" Energy: Why Some People Never Feel Like They Fit In</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 4 min read</span></p>
+      <p class="excerpt">If you've spent your life feeling like an outsider — restless, searching, slightly out of sync — BaZi has a name for it. Understanding "wandering star" energy reframes difference as a feature, not a bug.</p>
+    </div>
+
+    <!-- Card 3: Five Elements -->
+    <div class="post-card">
+      <div class="card-icon">🌿</div>
+      <div class="tags-row">
+        <span class="tag">Personality</span><span class="tag element-wood">Wood</span><span class="tag element-fire">Fire</span>
+      </div>
+      <h2><a href="/blog/five-elements-personality">The Five Elements Personality Framework — More Accurate Than MBTI?</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 5 min read</span></p>
+      <p class="excerpt">Most personality tests rely on self-reported answers. The Five Elements system calculates your type from your birth data — no questionnaire needed. Wood, Fire, Earth, Metal, Water: which one are you?</p>
+    </div>
+
+    <!-- Card 4: What is BaZi -->
+    <div class="post-card">
+      <div class="card-icon">📖</div>
+      <div class="tags-row">
+        <span class="tag">BaZi</span><span class="tag">Beginner</span>
+      </div>
+      <h2><a href="/blog/what-is-bazi">What is BaZi? A Beginner's Guide to Chinese Astrology</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 6 min read</span></p>
+      <p class="excerpt">BaZi — literally "Eight Characters" — is a 2000-year-old Chinese system that transforms your birth moment into a precise map of your personality, relationships, and life path. Learn the Four Pillars, Day Master, and Five Elements.</p>
+    </div>
+
+    <!-- Card 5: Elements Compatibility -->
+    <div class="post-card">
+      <div class="card-icon">💞</div>
+      <div class="tags-row">
+        <span class="tag">Relationships</span><span class="tag element-earth">Earth</span><span class="tag element-water">Water</span>
+      </div>
+      <h2><a href="/blog/chinese-zodiac-elements-compatibility">Chinese Zodiac Elements Compatibility: Beyond Sun Signs</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 5 min read</span></p>
+      <p class="excerpt">Most people know their zodiac animal. But the deeper layer — the one that governs relationship dynamics — is the Five Elements encoded in your BaZi chart. Discover how Wood, Fire, Earth, Metal, and Water interact in love and partnership.</p>
+    </div>
+
+    <!-- Card 6: Day Master -->
+    <div class="post-card">
+      <div class="card-icon">🎯</div>
+      <div class="tags-row">
+        <span class="tag">Self-Discovery</span><span class="tag">Guide</span>
+      </div>
+      <h2><a href="/blog/how-to-find-your-day-master">How to Find Your Day Master: The 10 Types Explained</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 6 min read</span></p>
+      <p class="excerpt">Your Day Master is the single most important piece of your BaZi chart. Learn about all 10 types — from Jia Wood (the towering tree) to Gui Water (the quiet mist) — and discover which one you are.</p>
+    </div>
+
+    <!-- Card 7: 2026 Forecast -->
+    <div class="post-card">
+      <div class="card-icon">🐴</div>
+      <div class="tags-row">
+        <span class="tag">Forecast</span><span class="tag">2026</span><span class="tag element-fire">Fire</span>
+      </div>
+      <h2><a href="/blog/2026-year-of-the-horse">2026 Year of the Fire Horse: Complete Element Forecast</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 5 min read</span></p>
+      <p class="excerpt">2026 is Bing Wu — a double Fire year. The Fire Horse brings intense energy, bold action, and transformation. Here's what it means for every element type and how to navigate the year ahead.</p>
+    </div>
+
+    <!-- Card 8: Eastern vs Western -->
+    <div class="post-card">
+      <div class="card-icon">⚖️</div>
+      <div class="tags-row">
+        <span class="tag">Comparison</span><span class="tag">Astrology</span>
+      </div>
+      <h2><a href="/blog/eastern-vs-western-astrology-accuracy">Eastern vs Western Astrology: Which is More Accurate?</a></h2>
+      <p class="meta">June 1, 2026 <span class="read-time">⏱ 5 min read</span></p>
+      <p class="excerpt">They're both ancient. They're both complex. But they operate on entirely different principles. BaZi speaks the language of elements and cycles; Western astrology speaks myth and psychology. Which one reveals more about you?</p>
+    </div>
+
   </div>
 
-  <div class="post-card">
-    <div><span class="tag">Personality</span><span class="tag">Five Elements</span></div>
-    <h2><a href="/blog/five-elements-personality">The Five Elements Personality Framework — More Accurate Than MBTI?</a></h2>
-    <p class="meta">June 1, 2026 · 5 min read</p>
-    <p class="excerpt">Most personality tests rely on self-reported answers. The Five Elements system calculates your type from your birth data — no questionnaire needed. Wood, Fire, Earth, Metal, Water: which one are you?</p>
-  </div>
-
-  <div class="post-card">
-    <div><span class="tag">BaZi</span><span class="tag">Beginner</span></div>
-    <h2><a href="/blog/what-is-bazi">What is BaZi? A Beginner's Guide to Chinese Astrology</a></h2>
-    <p class="meta">June 1, 2026 · 6 min read</p>
-    <p class="excerpt">BaZi — literally "Eight Characters" — is a 2000-year-old Chinese system that transforms your birth moment into a precise map of your personality, relationships, and life path. Learn the Four Pillars, Day Master, and Five Elements.</p>
-  </div>
-
-  <div class="post-card">
-    <div><span class="tag">Relationships</span><span class="tag">Elements</span></div>
-    <h2><a href="/blog/chinese-zodiac-elements-compatibility">Chinese Zodiac Elements Compatibility: Beyond Sun Signs</a></h2>
-    <p class="meta">June 1, 2026 · 5 min read</p>
-    <p class="excerpt">Most people know their zodiac animal. But the deeper layer — the one that governs relationship dynamics — is the Five Elements encoded in your BaZi chart. Discover how Wood, Fire, Earth, Metal, and Water interact in love and partnership.</p>
-  </div>
-
-  <div class="post-card">
-    <div><span class="tag">Self-Discovery</span><span class="tag">Guide</span></div>
-    <h2><a href="/blog/how-to-find-your-day-master">How to Find Your Day Master: The 10 Types Explained</a></h2>
-    <p class="meta">June 1, 2026 · 6 min read</p>
-    <p class="excerpt">Your Day Master is the single most important piece of your BaZi chart. Learn about all 10 types — from Jia Wood (the towering tree) to Gui Water (the quiet mist) — and discover which one you are.</p>
-  </div>
-
-  <div class="post-card">
-    <div><span class="tag">Forecast</span><span class="tag">2026</span></div>
-    <h2><a href="/blog/2026-year-of-the-horse">2026 Year of the Fire Horse: Complete Element Forecast</a></h2>
-    <p class="meta">June 1, 2026 · 5 min read</p>
-    <p class="excerpt">2026 is Bing Wu — a double Fire year. The Fire Horse brings intense energy, bold action, and transformation. Here's what it means for every element type and how to navigate the year ahead.</p>
-  </div>
-
-  <div class="post-card">
-    <div><span class="tag">Comparison</span><span class="tag">Astrology</span></div>
-    <h2><a href="/blog/eastern-vs-western-astrology-accuracy">Eastern vs Western Astrology: Which is More Accurate?</a></h2>
-    <p class="meta">June 1, 2026 · 5 min read</p>
-    <p class="excerpt">They're both ancient. They're both complex. But they operate on entirely different principles. BaZi speaks the language of elements and cycles; Western astrology speaks myth and psychology. Which one reveals more about you?</p>
+  <div class="newsletter-cta">
+    <h3>Discover Your Energy Blueprint</h3>
+    <p>Get a free preview of your personal BaZi chart — including your Day Master, Five Elements balance, and a key insight about your life path.</p>
+    <a href="/">Get Your Free Preview →</a>
   </div>
 
   <footer>
