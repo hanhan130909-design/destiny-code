@@ -110,4 +110,29 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://metaphysics-landing.vercel.app/blog/energy-blockage-birth-chart</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metaphysics-landing.vercel.app/blog/wealth-valve-closed</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metaphysics-landing.vercel.app/blog/repeating-relationship-pattern</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metaphysics-landing.vercel.app/blog/stuck-in-rest-decade</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metaphysics-landing.vercel.app/blog/career-blocker-bazi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
