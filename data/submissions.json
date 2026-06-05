@@ -1,0 +1,10 @@
+[
+  {
+    "name": "PersistenceTest",
+    "email": "persist@test.com",
+    "birthdate": "1990-06-15",
+    "birthtime": "08:00",
+    "birthplace": "Beijing",
+    "date": "2026-06-05T04:13:33.055561+00:00"
+  }
+]
