@@ -386,14 +386,13 @@ class handler(BaseHTTPRequestHandler):
         # Notify site owner (non-blocking — won't affect user response)
         notify_result = send_owner_notification(name, birthdate, birthplace, birthtime)
 
-        self._respond(200, {
+        # Return full chart data for calculator display
+        response_data = {
             "ok": True,
-            "day_master": result["day_master"],
-            "day_master_wuxing": result["day_master_wuxing"],
-            "dominant": result["dominant"],
-            "balance": result["balance"],
+            **result,  # include all chart fields
             "email_sent": email_result["sent"],
-        })
+        }
+        self._respond(200, response_data)
 
     def do_GET(self):
         """Health check."""
