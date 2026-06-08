@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destiny Code Newsletter — Weekly Energy Forecast</title>
+<meta name="description" content="Weekly BaZi energy forecasts, elemental deep dives, and practical guides. Free subscription, paid tier for personalized readings.">
+<link rel="canonical" href="https://metaphysics-landing.vercel.app/newsletter">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0a0c14;--surface:#111520;--border:#1e2433;--text:#c8ccd6;--text-dim:#6b7280;--gold:#c9a96e;--gold-dim:#8b7348}
+  body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+  .container{max-width:680px;margin:0 auto;padding:48px 20px}
+  nav{display:flex;justify-content:space-between;margin-bottom:48px}
+  nav a{color:var(--text-dim);text-decoration:none;font-size:14px}
+  nav a:hover{color:var(--gold)}
+  .logo{font-size:20px;font-weight:700;color:var(--text)}
+  .logo span{color:var(--gold)}
+
+  .hero{text-align:center;margin-bottom:48px}
+  .hero .icon{font-size:48px;margin-bottom:16px}
+  h1{font-size:36px;color:#e8ecf1;margin-bottom:12px;line-height:1.3}
+  .hero p{color:var(--text-dim);font-size:16px;max-width:480px;margin:0 auto 24px}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:24px}
+  .card h2{font-size:20px;color:var(--gold);margin-bottom:16px}
+  .card p{color:var(--text-dim);font-size:14px;margin-bottom:12px;line-height:1.7}
+
+  .signup-form{display:flex;gap:8px;margin-top:20px}
+  @media(max-width:500px){.signup-form{flex-direction:column}}
+  .signup-form input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;color:var(--text);font-size:15px}
+  .signup-form input:focus{outline:none;border-color:var(--gold)}
+  .signup-form button{background:var(--gold);color:var(--bg);border:none;border-radius:8px;padding:14px 28px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:all .2s}
+  .signup-form button:hover{filter:brightness(1.1)}
+  .signup-form button:disabled{opacity:.5;cursor:not-allowed}
+
+  .success{display:none;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#4ade80;padding:16px;border-radius:8px;margin-top:16px;text-align:center;font-size:14px}
+  .error{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;padding:16px;border-radius:8px;margin-top:16px;text-align:center;font-size:14px}
+
+  .tiers{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+  @media(max-width:500px){.tiers{grid-template-columns:1fr}}
+  .tier{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center}
+  .tier.featured{border-color:var(--gold);background:linear-gradient(135deg,#111520,#1a1420)}
+  .tier h3{font-size:16px;color:#e8ecf1;margin-bottom:4px}
+  .tier .price{font-size:28px;font-weight:800;color:var(--gold);margin:8px 0}
+  .tier .price span{font-size:13px;color:var(--text-dim);font-weight:400}
+  .tier ul{list-style:none;margin:16px 0 0;text-align:left}
+  .tier ul li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px solid var(--border)}
+  .tier ul li:last-child{border-bottom:none}
+  .tier ul li::before{content:'✦ ';color:var(--gold);font-size:10px}
+
+  .past-issues{margin-top:32px}
+  .past-issues h2{color:var(--gold);font-size:18px;margin-bottom:16px}
+  .issue{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:12px}
+  .issue .num{font-size:11px;color:var(--gold-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .issue .title{font-size:15px;color:#e8ecf1;margin-bottom:4px}
+  .issue .desc{font-size:13px;color:var(--text-dim)}
+
+  .disclaimer{font-size:11px;color:#4a4f5a;text-align:center;margin-top:32px;line-height:1.6}
+  footer{text-align:center;padding:24px 0;border-top:1px solid var(--border);margin-top:32px}
+  footer a{color:var(--gold);text-decoration:none;font-size:14px}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="/" class="logo">☯ <span>Destiny</span>Code</a>
+    <a href="/blog">← Blog</a>
+  </nav>
+
+  <div class="hero">
+    <div class="icon">📧</div>
+    <h1>Weekly Energy Forecast</h1>
+    <p>Every Monday: your elemental forecast, deep dives into BaZi concepts, and practical guides — delivered to your inbox.</p>
+  </div>
+
+  <div class="card">
+    <h2>Subscribe Free</h2>
+    <p>Weekly newsletter with energy forecasts, elemental deep dives, and practical BaZi guides. No spam, unsubscribe anytime.</p>
+    <div class="signup-form">
+      <input type="email" id="email" placeholder="your@email.com" required>
+      <button onclick="subscribe()">Subscribe →</button>
+    </div>
+    <div class="success" id="success">✅ Welcome! Check your inbox for the confirmation.</div>
+    <div class="error" id="error"></div>
+  </div>
+
+  <div class="tiers">
+    <div class="tier">
+      <h3>Free</h3>
+      <div class="price">$0<span>/month</span></div>
+      <ul>
+        <li>Weekly energy forecast</li>
+        <li>Elemental deep dives</li>
+        <li>BaZi 101 guides</li>
+        <li>Public Q&A picks</li>
+      </ul>
+    </div>
+    <div class="tier featured">
+      <h3>Premium</h3>
+      <div class="price">$5<span>/month</span></div>
+      <ul>
+        <li>All free content</li>
+        <li>Personalized monthly reading</li>
+        <li>Early access to reports</li>
+        <li>Subscriber-only Q&A</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="past-issues">
+    <h2>Upcoming Editions</h2>
+    <div class="issue">
+      <div class="num">EDITION #1</div>
+      <div class="title">The Element You're Missing</div>
+      <div class="desc">Most people have one missing element. Find yours — and why it explains your lifelong blind spot.</div>
+    </div>
+    <div class="issue">
+      <div class="num">EDITION #2</div>
+      <div class="title">Your Decade Has a Theme</div>
+      <div class="desc">The 10-year luck cycle running your life right now — and when the next one arrives.</div>
+    </div>
+    <div class="issue">
+      <div class="num">EDITION #3</div>
+      <div class="title">Why You Keep Dating the Same Person</div>
+      <div class="desc">Your BaZi chart reveals relationship patterns you can't see. Break the cycle.</div>
+    </div>
+  </div>
+
+  <p class="disclaimer">Free newsletter. Premium tier ($5/month) includes personalized readings. Cancel anytime. No refunds on monthly subscriptions.</p>
+
+  <footer>
+    <a href="/">← Back to Destiny Code</a>
+  </footer>
+</div>
+
+<script>
+async function subscribe() {
+  const email = document.getElementById('email').value.trim();
+  const errEl = document.getElementById('error');
+  const okEl = document.getElementById('success');
+  errEl.style.display = 'none';
+  okEl.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errEl.textContent = 'Please enter a valid email.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.querySelector('.signup-form button');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+
+  try {
+    const resp = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email})
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      okEl.style.display = 'block';
+      document.getElementById('email').value = '';
+    } else {
+      errEl.textContent = data.error || 'Subscription failed.';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Subscribe →';
+  }
+}
+</script>
+</body>
+</html>

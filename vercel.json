@@ -4,6 +4,7 @@
     { "source": "/blog/:post", "destination": "/blog/:post.html" },
     { "source": "/report", "destination": "/report.html" },
     { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/free-bazi-calculator", "destination": "/free-bazi-calculator.html" }
+    { "source": "/free-bazi-calculator", "destination": "/free-bazi-calculator.html" },
+    { "source": "/newsletter", "destination": "/newsletter.html" }
   ]
 }
