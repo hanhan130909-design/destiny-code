@@ -565,18 +565,10 @@ class handler(BaseHTTPRequestHandler):
         if email:
             email_result = send_preview_email(email, name, chart_data)
 
-        # AI interpretation (synchronous — user waits but gets full report)
-        ai_text = ""
-        if DEEPSEEK_API_KEY:
-            try:
-                ai_text = generate_ai_interpretation(chart_data, name)
-            except Exception as e:
-                ai_text = ""
-
+        # AI interpretation is now async — frontend calls /api/interpret separately
         response = {
             "ok": True,
             **chart_data,
-            "ai_interpretation": ai_text,
             "email_sent": email_result.get("sent", False),
         }
         self._respond(200, response)

@@ -306,6 +306,9 @@ async function calculate() {
     chartData = await resp.json();
     renderResults(chartData, name);
 
+    // Async AI interpretation
+    loadAIInterpretation(chartData, name);
+
     // Pre-fill upsell email
     if (email) {
       document.getElementById('upsellEmail').value = email;
@@ -318,6 +321,37 @@ async function calculate() {
     btn.disabled = false;
     btn.textContent = '🔮 Calculate My Energy Blueprint';
     spinner.style.display = 'none';
+  }
+}
+
+async function loadAIInterpretation(chartData, name) {
+  const aiSection = document.getElementById('aiSection');
+  const aiLoading = document.getElementById('aiLoading');
+  const aiContent = document.getElementById('aiContent');
+  aiSection.classList.add('show');
+  aiLoading.style.display = 'block';
+  aiContent.textContent = '';
+
+  try {
+    const resp = await fetch('/api/interpret', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, chart_data: chartData })
+    });
+
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.interpretation) {
+        aiLoading.style.display = 'none';
+        aiContent.textContent = data.interpretation;
+      } else {
+        aiSection.classList.remove('show');
+      }
+    } else {
+      aiSection.classList.remove('show');
+    }
+  } catch (e) {
+    aiSection.classList.remove('show');
   }
 }
 
@@ -370,14 +404,8 @@ function renderResults(data, name) {
   }
   document.getElementById('balanceNote').textContent = note;
 
-  // AI Interpretation
-  if (data.ai_interpretation && data.ai_interpretation.length > 10) {
-    document.getElementById('aiLoading').style.display = 'none';
-    document.getElementById('aiContent').textContent = data.ai_interpretation;
-    document.getElementById('aiSection').classList.add('show');
-  } else {
-    document.getElementById('aiSection').classList.remove('show');
-  }
+  // AI section: shown by loadAIInterpretation() separately
+  // (no inline ai_interpretation check needed here)
 
   // Show results
   document.getElementById('results').classList.add('show');
