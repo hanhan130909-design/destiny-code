@@ -195,10 +195,12 @@ def compute_bazi_chart(year, month, day, hour=12, minute=0, birthplace=""):
             dm_wx = dm["wuxing"]
             dm_yy = dm["yinyang"]
 
-            # Map wuxing to English
+            # Map to English/Pinyin
             wx_en = {"木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water"}
             yy_en = {"阳": "Yang", "阴": "Yin"}
+            pinyin_map = {"甲":"Jia","乙":"Yi","丙":"Bing","丁":"Ding","戊":"Wu","己":"Ji","庚":"Geng","辛":"Xin","壬":"Ren","癸":"Gui"}
 
+            dm_name_en = pinyin_map.get(dm_name, dm_name)
             dm_wx_en = wx_en.get(dm_wx, dm_wx)
             dm_yy_en = yy_en.get(dm_yy, dm_yy)
 
@@ -238,9 +240,9 @@ def compute_bazi_chart(year, month, day, hour=12, minute=0, birthplace=""):
                 balance = "moderately balanced"
                 balance_detail = f"Your chart leans toward {dominant} energy while maintaining reasonable access to all elements."
 
-            archetype = _ARCHETYPES.get((dm_name, dm_yy_en), "a unique and powerful configuration")
+            archetype = _ARCHETYPES.get((dm_name_en, dm_yy_en), "a unique and powerful configuration")
             energy_theme = _ENERGY_THEMES.get(dm_wx_en, "Self-Discovery")
-            growth_edge = _GROWTH_EDGES.get(dm_name, "Understanding your energy patterns is the first step toward growth.")
+            growth_edge = _GROWTH_EDGES.get(dm_name_en, "Understanding your energy patterns is the first step toward growth.")
 
             # Build Ten Gods from the chart data
             shishen = chart_dict.get("shishen", {})
@@ -255,7 +257,7 @@ def compute_bazi_chart(year, month, day, hour=12, minute=0, birthplace=""):
             hidden_stems = day_pillar.get("hidden_stems", [])
 
             return {
-                "day_master": dm_name,
+                "day_master": dm_name_en,
                 "day_master_wuxing": dm_wx_en,
                 "day_master_yinyang": dm_yy_en,
                 "archetype": archetype,
@@ -267,10 +269,10 @@ def compute_bazi_chart(year, month, day, hour=12, minute=0, birthplace=""):
                 "balance_detail": balance_detail,
                 "growth_edge": growth_edge,
                 "pillars": {
-                    "year": f"{year_pillar['stem_name']}{year_pillar['branch_name']}",
-                    "month": f"{month_pillar['stem_name']}{month_pillar['branch_name']}",
-                    "day": f"{day_pillar['stem_name']}{day_pillar['branch_name']}",
-                    "hour": f"{hour_pillar['stem_name']}{hour_pillar['branch_name']}",
+                    "year": f"{year_pillar.get('stem_pinyin', year_pillar['stem_name'])}{year_pillar.get('branch_pinyin', year_pillar['branch_name'])}",
+                    "month": f"{month_pillar.get('stem_pinyin', month_pillar['stem_name'])}{month_pillar.get('branch_pinyin', month_pillar['branch_name'])}",
+                    "day": f"{day_pillar.get('stem_pinyin', day_pillar['stem_name'])}{day_pillar.get('branch_pinyin', day_pillar['branch_name'])}",
+                    "hour": f"{hour_pillar.get('stem_pinyin', hour_pillar['stem_name'])}{hour_pillar.get('branch_pinyin', hour_pillar['branch_name'])}",
                 },
                 "pillars_detailed": {
                     "year": year_pillar,
