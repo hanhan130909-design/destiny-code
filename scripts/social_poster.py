@@ -8,7 +8,7 @@ Destiny Code Social Auto-Poster v2
 
 Usage: python3 scripts/social_poster.py [--dry-run] [--platform fb|ig|both]
 """
-import urllib.request, urllib.parse, json, random, re, time, os, sys, textwrap
+import urllib.request, urllib.parse, urllib.error, json, random, re, time, os, sys, textwrap
 from pathlib import Path
 from datetime import datetime
 
@@ -125,11 +125,17 @@ def post_ig(ig_id: str, token: str, caption: str, image_url: str = None) -> str:
     
     # Step 1: Create media container
     params = {"caption": caption, "access_token": token, "image_url": image_url}
-    r = urllib.request.urlopen(
+    req = urllib.request.Request(
         f"https://graph.facebook.com/v25.0/{ig_id}/media",
         data=urllib.parse.urlencode(params).encode("utf-8")
     )
-    result = json.loads(r.read())
+    try:
+        r = urllib.request.urlopen(req)
+        result = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = e.read().decode()
+        print(f"  ❌ HTTP {e.code}: {body}", file=sys.stderr)
+        raise
     cid = result.get("id")
     if not cid:
         return None
