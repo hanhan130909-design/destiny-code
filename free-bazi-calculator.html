@@ -137,7 +137,28 @@
   .disclaimer{font-size:11px;color:#4a4f5a;text-align:center;margin-top:32px;line-height:1.6}
 
   .error-text{color:#f87171;font-size:12px;margin-top:4px;display:none}
+
+  /* Share section */
+  .share-section{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:24px;text-align:center}
+  .share-section.show{display:block;animation:fadeIn .5s ease}
+  .share-section .share-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold-dim);margin-bottom:12px}
+  .share-section .share-text{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--text-dim);margin-bottom:14px;line-height:1.5;text-align:left;word-break:break-word}
+  .share-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .share-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;border:none;transition:all .2s;font-family:inherit}
+  .share-btn.twitter{background:#1d9bf0;color:#fff}
+  .share-btn.twitter:hover{background:#1a8cd8;transform:translateY(-1px)}
+  .share-btn.copy{background:var(--bg);color:var(--text);border:1px solid var(--border)}
+  .share-btn.copy:hover{border-color:var(--gold);color:var(--gold)}
+  .share-btn.copied{background:#166534!important;border-color:#22c55e!important;color:#4ade80!important}
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-63MWNPN7FV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-63MWNPN7FV');
+</script>
 </head>
 <body>
 
@@ -186,6 +207,16 @@
     <div class="result-hero">
       <div class="day-master" id="dmDisplay">—</div>
       <div class="archetype" id="archetypeDisplay"></div>
+    </div>
+
+    <!-- Share Section -->
+    <div class="share-section" id="shareSection">
+      <div class="share-title">📤 Share Your Day Master</div>
+      <div class="share-text" id="shareText"></div>
+      <div class="share-buttons">
+        <a class="share-btn twitter" id="twitterBtn" href="#" target="_blank" rel="noopener" onclick="gtag('event','share',{method:'twitter'})">𝕏 Share on X</a>
+        <button class="share-btn copy" id="copyBtn" onclick="copyShareText()">📋 Copy Text</button>
+      </div>
     </div>
 
     <div class="stats-grid">
@@ -410,6 +441,44 @@ function renderResults(data, name) {
   // Show results
   document.getElementById('results').classList.add('show');
   document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Generate share text
+  const shareUrl = 'https://metaphysics-landing.vercel.app/free-bazi-calculator';
+  const shareMsg = `My BaZi Day Master is ${data.day_master} (${data.day_master_wuxing}) — ${data.archetype || 'discover yours'}. Find your cosmic blueprint for free at ${shareUrl} #BaZi #ChineseAstrology #DestinyCode`;
+  document.getElementById('shareText').textContent = shareMsg;
+  document.getElementById('twitterBtn').href = `https://x.com/intent/tweet?text=${encodeURIComponent(shareMsg)}`;
+  document.getElementById('shareSection').classList.add('show');
+}
+
+function copyShareText() {
+  const text = document.getElementById('shareText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    gtag('event', 'share', { method: 'copy' });
+    setTimeout(() => {
+      btn.textContent = '📋 Copy Text';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy Text';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
 }
 
 function goToPayment() {
