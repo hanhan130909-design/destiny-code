@@ -1,6 +1,7 @@
 """
 Destiny Code — Referral / Viral Growth API
-POST /api/referral — generate referral code
+POST /api/referral — generate referral code (deterministic from email)
+POST /api/referral/click — track referral click (GA4 + optional GitHub DB)
 POST /api/referral/convert — track referral conversion
 GET  /api/referral/stats — K-factor & referral stats (admin)
 """
@@ -11,26 +12,39 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from http.server import BaseHTTPRequestHandler
-from api.github_db import _get_file, _put_file
+
+BASE_URL = "https://metaphysics-landing.vercel.app/free-bazi-calculator"
+
+# Try GitHub DB; if GH_TOKEN not set, operate in stateless mode
+STATELESS = True
+try:
+    from api.github_db import _get_file, _put_file
+    if os.environ.get("GH_TOKEN"):
+        STATELESS = False
+except Exception:
+    pass
 
 REFERRALS_FILE = "referrals.json"
-BASE_URL = "https://metaphysics-landing.vercel.app/free-bazi-calculator"
 
 
 def _generate_code(email: str) -> str:
-    """Generate a short referral code from email hash."""
+    """Generate a deterministic referral code from email hash."""
     h = hashlib.sha256(email.lower().strip().encode()).hexdigest()[:8]
     return h
 
 
 def _read_referrals():
+    if STATELESS:
+        return {"referrals": [], "stats": {"total_sent": 0, "total_clicks": 0, "total_conversions": 0, "total_revenue": 0, "total_users": 0}}, ""
     data, sha = _get_file(REFERRALS_FILE)
     if data is None:
-        data = {"referrals": [], "stats": {"total_sent": 0, "total_clicks": 0, "total_conversions": 0, "total_revenue": 0}}
+        data = {"referrals": [], "stats": {"total_sent": 0, "total_clicks": 0, "total_conversions": 0, "total_revenue": 0, "total_users": 0}}
     return data, sha
 
 
 def _save_referrals(data, sha=""):
+    if STATELESS:
+        return True  # no-op in stateless mode
     return _put_file(REFERRALS_FILE, data, sha)
 
 
@@ -58,9 +72,10 @@ def create_referral(email: str, name: str = "", day_master: str = "", element: s
         "element": element,
         "conversions": 0,
         "clicks": 0,
-        "created_at": "",  # will be filled by server timestamp
+        "created_at": "",
     }
     data["referrals"].append(entry)
+    data["stats"]["total_sent"] = data["stats"].get("total_sent", 0) + 1
     if len(data["referrals"]) > 500:
         data["referrals"] = data["referrals"][-500:]
 
@@ -83,6 +98,9 @@ def track_click(code: str):
             data["stats"]["total_clicks"] = data["stats"].get("total_clicks", 0) + 1
             _save_referrals(data, sha)
             return {"tracked": True, "code": code}
+    # In stateless mode, always return success (tracked via GA4 on client side)
+    if STATELESS:
+        return {"tracked": True, "code": code, "mode": "stateless"}
     return {"tracked": False, "error": "Invalid referral code"}
 
 
@@ -93,7 +111,7 @@ def track_conversion(code: str, referred_email: str):
         if ref["code"] == code:
             ref["conversions"] = ref.get("conversions", 0) + 1
             data["stats"]["total_conversions"] = data["stats"].get("total_conversions", 0) + 1
-            data["stats"]["total_revenue"] = data["stats"].get("total_revenue", 0) + 29  # estimate
+            data["stats"]["total_revenue"] = data["stats"].get("total_revenue", 0) + 29
             _save_referrals(data, sha)
             return {
                 "tracked": True,
@@ -101,6 +119,8 @@ def track_conversion(code: str, referred_email: str):
                 "referrer_email": ref["referrer_email"],
                 "reward": "$5 off for both parties",
             }
+    if STATELESS:
+        return {"tracked": True, "code": code, "reward": "$5 off for both parties", "mode": "stateless"}
     return {"tracked": False, "error": "Invalid referral code"}
 
 
@@ -108,17 +128,15 @@ def get_kfactor():
     """Calculate viral coefficient and referral stats."""
     data, _ = _read_referrals()
     stats = data.get("stats", {})
-    total_users = stats.get("total_users", 0)
+    total_users = max(stats.get("total_users", 0), stats.get("total_sent", 0))
     total_conversions = stats.get("total_conversions", 0)
     total_clicks = stats.get("total_clicks", 0)
 
-    # K-factor = average # of new users each existing user brings
     if total_users > 0:
         k_factor = round(total_conversions / total_users, 3)
     else:
         k_factor = 0.0
 
-    # Conversion rate from click → signup
     if total_clicks > 0:
         click_to_signup = round(total_conversions / total_clicks * 100, 1)
     else:
@@ -133,14 +151,8 @@ def get_kfactor():
         "total_revenue": stats.get("total_revenue", 0),
         "target_k_factor": 0.3,
         "status": "viral" if k_factor >= 0.3 else ("growing" if k_factor >= 0.1 else "needs_boost"),
+        "persistence": "stateless" if STATELESS else "github_db",
     }
-
-
-def update_total_users():
-    """Increment total user count for K-factor calculation."""
-    data, sha = _read_referrals()
-    data["stats"]["total_users"] = data["stats"].get("total_users", 0) + 1
-    _save_referrals(data, sha)
 
 
 class handler(BaseHTTPRequestHandler):
@@ -158,7 +170,6 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         if "/stats" in self.path:
-            # Admin: K-factor stats
             stats = get_kfactor()
             self.wfile.write(json.dumps(stats, indent=2).encode())
         else:
@@ -172,26 +183,18 @@ class handler(BaseHTTPRequestHandler):
         except json.JSONDecodeError:
             data = {}
 
-        result = {"error": "Unknown action"}
-
         if "/convert" in self.path:
-            # Track a referral conversion
             code = data.get("code", "")
             email = data.get("email", "")
             result = track_conversion(code, email)
-
         elif "/click" in self.path:
-            # Track a referral link click
             code = data.get("code", "")
             result = track_click(code)
-
         else:
-            # Generate referral code
             email = data.get("email", "")
             name = data.get("name", "")
             day_master = data.get("day_master", "")
             element = data.get("element", "")
-
             if not email:
                 result = {"error": "Email is required"}
             else:
