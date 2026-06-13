@@ -7,5 +7,11 @@
     { "source": "/calculator", "destination": "/free-bazi-calculator.html" },
     { "source": "/free-bazi-calculator", "destination": "/free-bazi-calculator.html" },
     { "source": "/newsletter", "destination": "/newsletter.html" }
-  ]
+  ],
+  "functions": {
+    "api/referral.py": {
+      "memory": 256,
+      "maxDuration": 10
+    }
+  }
 }

@@ -152,9 +152,26 @@
   .share-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;border:none;transition:all .2s;font-family:inherit}
   .share-btn.twitter{background:#1d9bf0;color:#fff}
   .share-btn.twitter:hover{background:#1a8cd8;transform:translateY(-1px)}
+  .share-btn.whatsapp{background:#25D366;color:#fff}
+  .share-btn.whatsapp:hover{background:#1fa851;transform:translateY(-1px)}
+  .share-btn.facebook{background:#1877F2;color:#fff}
+  .share-btn.facebook:hover{background:#1666d0;transform:translateY(-1px)}
   .share-btn.copy{background:var(--bg);color:var(--text);border:1px solid var(--border)}
   .share-btn.copy:hover{border-color:var(--gold);color:var(--gold)}
   .share-btn.copied{background:#166534!important;border-color:#22c55e!important;color:#4ade80!important}
+
+  /* Referral section */
+  .referral-section{display:none;background:linear-gradient(135deg,#111520,#1a1420);border:2px solid var(--gold);border-radius:10px;padding:24px;margin-bottom:24px;text-align:center}
+  .referral-section.show{display:block;animation:fadeIn .5s ease}
+  .referral-section .ref-title{font-size:15px;color:var(--gold);font-weight:700;margin-bottom:4px}
+  .referral-section .ref-subtitle{font-size:12px;color:var(--text-dim);margin-bottom:16px}
+  .referral-link-box{display:flex;gap:8px;max-width:480px;margin:0 auto 12px}
+  @media(max-width:500px){.referral-link-box{flex-direction:column}}
+  .referral-link-box input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--gold);font-size:12px;text-align:center;font-family:monospace}
+  .referral-link-box button{background:var(--gold);color:var(--bg);border:none;border-radius:6px;padding:10px 20px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap;transition:all .2s}
+  .referral-link-box button:hover{filter:brightness(1.1)}
+  .referral-link-box button.copied{background:#166534!important;color:#4ade80!important}
+  .ref-reward{font-size:12px;color:var(--gold-dim);margin-top:4px}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-63MWNPN7FV"></script>
@@ -219,9 +236,22 @@
       <div class="share-title">📤 Share Your Day Master</div>
       <div class="share-text" id="shareText"></div>
       <div class="share-buttons">
-        <a class="share-btn twitter" id="twitterBtn" href="#" target="_blank" rel="noopener" onclick="gtag('event','share',{method:'twitter'})">𝕏 Share on X</a>
+        <a class="share-btn twitter" id="twitterBtn" href="#" target="_blank" rel="noopener" onclick="gtag('event','share',{method:'twitter'});trackShareClick('twitter')">𝕏 Share on X</a>
+        <a class="share-btn facebook" id="facebookBtn" href="#" target="_blank" rel="noopener" onclick="gtag('event','share',{method:'facebook'});trackShareClick('facebook')">📘 Facebook</a>
+        <a class="share-btn whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener" onclick="gtag('event','share',{method:'whatsapp'});trackShareClick('whatsapp')">💬 WhatsApp</a>
         <button class="share-btn copy" id="copyBtn" onclick="copyShareText()">📋 Copy Text</button>
       </div>
+    </div>
+
+    <!-- Referral Section -->
+    <div class="referral-section" id="referralSection">
+      <div class="ref-title">🎁 Invite Friends, Earn Rewards</div>
+      <div class="ref-subtitle">Share your unique link — when friends discover their Day Master, you both get <strong>$5 off</strong> the full report.</div>
+      <div class="referral-link-box">
+        <input type="text" id="refLink" readonly onclick="this.select()">
+        <button id="refCopyBtn" onclick="copyRefLink()">📋 Copy Link</button>
+      </div>
+      <div class="ref-reward" id="refReward"></div>
     </div>
 
     <div class="stats-grid">
@@ -302,6 +332,94 @@
 
 <script>
 let chartData = null;
+let referralCode = null;
+let refUrl = '';
+
+// ── Referral Tracking ──────────────────────────────────────────────────
+async function initReferral() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref');
+  if (ref) {
+    referralCode = ref;
+    // Track the click
+    try {
+      await fetch('/api/referral/click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: ref })
+      });
+    } catch(e) {}
+    gtag('event', 'referral_click', { code: ref });
+  }
+}
+
+async function generateReferralLink(email, name, dm, element) {
+  try {
+    const resp = await fetch('/api/referral', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name, day_master: dm, element })
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      refUrl = data.share_url;
+      document.getElementById('refLink').value = refUrl;
+      document.getElementById('referralSection').classList.add('show');
+      document.getElementById('refReward').textContent = 
+        `Your referral link is active. ${data.existing ? 'Track your invites below.' : 'Start sharing!'}`;
+      // Update share buttons with referral URL
+      updateShareLinks(data.share_text, refUrl);
+    }
+  } catch(e) {}
+}
+
+async function trackReferralConversion() {
+  if (referralCode) {
+    const email = document.getElementById('email').value.trim() || document.getElementById('upsellEmail').value.trim();
+    try {
+      await fetch('/api/referral/convert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: referralCode, email })
+      });
+      gtag('event', 'referral_conversion', { code: referralCode });
+    } catch(e) {}
+  }
+}
+
+function trackShareClick(platform) {
+  gtag('event', 'viral_share', { method: platform, has_referral: !!refUrl });
+}
+
+function copyRefLink() {
+  const input = document.getElementById('refLink');
+  const btn = document.getElementById('refCopyBtn');
+  navigator.clipboard.writeText(input.value).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    gtag('event', 'copy_referral_link');
+    setTimeout(() => { btn.textContent = '📋 Copy Link'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    input.select();
+    document.execCommand('copy');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy Link'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function updateShareLinks(shareMsg, url) {
+  document.getElementById('shareText').textContent = shareMsg;
+  document.getElementById('twitterBtn').href = 
+    `https://x.com/intent/tweet?text=${encodeURIComponent(shareMsg)}`;
+  document.getElementById('facebookBtn').href = 
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url || 'https://metaphysics-landing.vercel.app/free-bazi-calculator')}&quote=${encodeURIComponent(shareMsg)}`;
+  document.getElementById('whatsappBtn').href = 
+    `https://wa.me/?text=${encodeURIComponent(shareMsg)}`;
+}
+
+// ── Init referral tracking on page load ────────────────────────────────
+initReferral();
 
 async function calculate() {
   const name = document.getElementById('name').value.trim();
@@ -449,10 +567,19 @@ function renderResults(data, name) {
 
   // Generate share text
   const shareUrl = 'https://metaphysics-landing.vercel.app/free-bazi-calculator';
-  const shareMsg = `My BaZi Day Master is ${data.day_master} (${data.day_master_wuxing}) — ${data.archetype || 'discover yours'}. Find your cosmic blueprint for free at ${shareUrl} #BaZi #ChineseAstrology #DestinyCode`;
-  document.getElementById('shareText').textContent = shareMsg;
-  document.getElementById('twitterBtn').href = `https://x.com/intent/tweet?text=${encodeURIComponent(shareMsg)}`;
+  const defaultShare = `My BaZi Day Master is ${data.day_master} (${data.day_master_wuxing}) — ${data.archetype || 'discover yours'}. Find your cosmic blueprint for free at ${shareUrl} #BaZi #ChineseAstrology #DestinyCode`;
+  document.getElementById('shareText').textContent = defaultShare;
+  document.getElementById('twitterBtn').href = `https://x.com/intent/tweet?text=${encodeURIComponent(defaultShare)}`;
+  document.getElementById('facebookBtn').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(defaultShare)}`;
+  document.getElementById('whatsappBtn').href = `https://wa.me/?text=${encodeURIComponent(defaultShare)}`;
   document.getElementById('shareSection').classList.add('show');
+
+  // Generate referral link + track conversion
+  const userEmail = document.getElementById('email').value.trim();
+  if (userEmail) {
+    generateReferralLink(userEmail, name, data.day_master, data.day_master_wuxing);
+  }
+  trackReferralConversion();
 }
 
 function copyShareText() {
