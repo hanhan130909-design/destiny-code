@@ -6,7 +6,8 @@
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/calculator", "destination": "/free-bazi-calculator.html" },
     { "source": "/free-bazi-calculator", "destination": "/free-bazi-calculator.html" },
-    { "source": "/newsletter", "destination": "/newsletter.html" }
+    { "source": "/newsletter", "destination": "/newsletter.html" },
+    { "source": "/api/referral/:action", "destination": "/api/referral" }
   ],
   "functions": {
     "api/referral.py": {
