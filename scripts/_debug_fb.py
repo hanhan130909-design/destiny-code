@@ -1,35 +1,42 @@
 #!/usr/bin/env python3
-"""Debug Facebook token validity."""
-import json, urllib.request, urllib.parse, urllib.error
-from pathlib import Path
+import json, urllib.request, urllib.parse, sys
 
-PROJECT = Path(__file__).resolve().parent.parent
-CONFIG = PROJECT / "config/meta_config.json"
-
-cfg = json.loads(open(CONFIG).read())
-token = cfg["page_token"]
+cfg = json.load(open("/home/ubuntu/projects/metaphysics-landing/config/meta_config.json"))
 page_id = cfg["page_id"]
+token = cfg["page_token"]
 
-print(f"Token length: {len(token)}")
-print(f"Token prefix: {token[:15]}...")
-print(f"Token suffix: ...{token[-8:]}")
-
-# Test: get page info
-print("\n--- Testing GET /me ---")
+# Test 1: Validate token with token debug endpoint
+print("=== Token Debug ===")
 try:
-    url = f"https://graph.facebook.com/v25.0/me?access_token={token}"
-    r = urllib.request.urlopen(url)
-    print(f"✅ GET /me: {r.read().decode()}")
+    url = f"https://graph.facebook.com/debug_token?input_token={token}&access_token={token}"
+    r = urllib.request.urlopen(url, timeout=15)
+    data = json.loads(r.read())
+    print(json.dumps(data, indent=2))
 except urllib.error.HTTPError as e:
     body = e.read().decode()
-    print(f"❌ HTTP {e.code}: {body}")
+    print(f"HTTP {e.code}: {body}")
 
-# Test: get page info
-print("\n--- Testing GET /{page_id} ---")
+# Test 2: Check page access
+print("\n=== Page Access ===")
 try:
-    url = f"https://graph.facebook.com/v25.0/{page_id}?fields=name&access_token={token}"
-    r = urllib.request.urlopen(url)
-    print(f"✅ GET page: {r.read().decode()}")
+    url = f"https://graph.facebook.com/v25.0/{page_id}?fields=name,access_token&access_token={token}"
+    r = urllib.request.urlopen(url, timeout=15)
+    data = json.loads(r.read())
+    print(json.dumps(data, indent=2))
 except urllib.error.HTTPError as e:
     body = e.read().decode()
-    print(f"❌ HTTP {e.code}: {body}")
+    print(f"HTTP {e.code}: {body}")
+
+# Test 3: Try to post a minimal test
+print("\n=== Test Post ===")
+try:
+    from datetime import datetime
+    test_msg = f"Test post from cron debug at {datetime.now().isoformat()[:19]}"
+    params = {"message": test_msg, "access_token": token}
+    data_enc = urllib.parse.urlencode(params).encode("utf-8")
+    r = urllib.request.urlopen(f"https://graph.facebook.com/v25.0/{page_id}/feed", data=data_enc)
+    result = json.loads(r.read())
+    print(json.dumps(result, indent=2))
+except urllib.error.HTTPError as e:
+    body = e.read().decode()
+    print(f"HTTP {e.code}: {body}")
