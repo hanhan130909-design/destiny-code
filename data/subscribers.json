@@ -3,6 +3,13 @@
     "email": "hanhan130909@gmail.com",
     "subscribed_at": "2026-06-08T15:00:40.456142",
     "source": "newsletter_page",
-    "active": true
+    "active": true,
+    "editions_sent": [
+      {
+        "edition": "1",
+        "sent_at": "2026-06-22T00:12:31Z",
+        "subject": "Your personality has a blind spot — find your missing element"
+      }
+    ]
   }
 ]
